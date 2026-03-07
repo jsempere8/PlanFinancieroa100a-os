@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Planificador Financiero Pro</title>
+<title>Planificador Financiero Profesional</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -12,15 +12,15 @@
 
 body{
 font-family:Arial;
-background:#eef2f7;
+background:#eef3f8;
 margin:0;
-color:#333;
+color:#222;
 }
 
 header{
 background:#0a2540;
 color:white;
-padding:35px;
+padding:30px;
 text-align:center;
 }
 
@@ -32,20 +32,10 @@ padding:40px;
 
 .card{
 background:white;
-padding:30px;
+padding:25px;
 border-radius:10px;
 box-shadow:0 10px 20px rgba(0,0,0,0.08);
-margin-bottom:30px;
-}
-
-h2{
-color:#0a2540;
-}
-
-label{
-display:block;
-margin-top:12px;
-font-weight:bold;
+margin-bottom:25px;
 }
 
 input,select{
@@ -56,6 +46,12 @@ margin-top:5px;
 border-radius:6px;
 border:1px solid #ccc;
 
+}
+
+label{
+font-weight:bold;
+margin-top:10px;
+display:block;
 }
 
 button{
@@ -72,32 +68,18 @@ cursor:pointer;
 }
 
 button:hover{
-
 background:#004ecc;
-
 }
 
 .result{
-
 margin-top:20px;
+background:#f1f5ff;
 padding:20px;
-background:#f0f4ff;
 border-radius:8px;
-
-}
-
-.explain{
-
-background:#fafafa;
-padding:20px;
-border-left:5px solid #0066ff;
-
 }
 
 canvas{
-
-margin-top:25px;
-
+margin-top:20px;
 }
 
 </style>
@@ -108,9 +90,8 @@ margin-top:25px;
 
 <header>
 
-<h1>Planificador de Independencia Financiera</h1>
-
-<p>Modelo basado en inflación histórica y rentabilidad de carteras diversificadas</p>
+<h1>Simulador de Patrimonio y Herencia</h1>
+<p>Modelo con Monte Carlo e inflación realista</p>
 
 </header>
 
@@ -121,103 +102,38 @@ margin-top:25px;
 <h2>Datos personales</h2>
 
 <label>Edad actual</label>
-<input id="edad" type="number">
+<input id="edad" type="number" value="43">
 
 <label>Edad objetivo</label>
-<input id="retiro" type="number">
+<input id="retiro" type="number" value="65">
 
 <label>Capital actual (€)</label>
-<input id="capital" type="number">
+<input id="capital" type="number" value="150">
 
 <label>Aportación mensual (€)</label>
-<input id="aportacion" type="number">
+<input id="aportacion" type="number" value="150">
 
-<label>Gasto mensual deseado hoy (€)</label>
-<input id="gasto" type="number">
-
-<label>Inflación estimada</label>
-
-<select id="inflacion">
-
-<option value="0.02">2%</option>
-<option value="0.025">2.5%</option>
-<option value="0.03">3%</option>
-
-</select>
-
-<label>Rentabilidad media cartera</label>
+<label>Rentabilidad media esperada</label>
 
 <select id="rentabilidad">
-
-<option value="0.05">5%</option>
-<option value="0.06">6%</option>
-<option value="0.07">7%</option>
-
+<option value="0.07">7% cartera agresiva</option>
+<option value="0.06">6% equilibrada</option>
+<option value="0.05">5% conservadora</option>
 </select>
 
-<button onclick="simular()">Simular plan</button>
+<label>Inflación media</label>
+
+<select id="inflacion">
+<option value="0.025">2.5%</option>
+<option value="0.03">3%</option>
+<option value="0.02">2%</option>
+</select>
+
+<button onclick="simular()">Simular plan financiero</button>
 
 <div class="result" id="resultado"></div>
 
 <canvas id="grafico"></canvas>
-
-</div>
-
-<div class="card">
-
-<h2>Cartera ejemplo diversificada</h2>
-
-<div class="explain">
-
-<ul>
-
-<li>60% MSCI World Index</li>
-<li>20% Emerging Markets</li>
-<li>20% Global Bonds</li>
-
-</ul>
-
-<p>Fondos típicos usados por inversores indexados:</p>
-
-<ul>
-
-<li>Vanguard Global Stock</li>
-<li>Amundi MSCI World</li>
-<li>iShares Core MSCI World</li>
-
-</ul>
-
-<p>Rentabilidad histórica media: 5-7% anual largo plazo.</p>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>Cómo se calcula el patrimonio objetivo</h2>
-
-<div class="explain">
-
-<p>
-
-Se usa la <b>regla del 4%</b> usada en planificación financiera.
-
-</p>
-
-<p>
-
-Patrimonio necesario ≈ gasto anual / 0.04
-
-</p>
-
-<p>
-
-Esto permite retirar dinero durante décadas sin agotar el capital.
-
-</p>
-
-</div>
 
 </div>
 
@@ -227,11 +143,14 @@ Esto permite retirar dinero durante décadas sin agotar el capital.
 
 let chart;
 
-function randomReturn(mean){
+function randomNormal(mean,vol){
 
-let volatility=0.12
+let u1=Math.random()
+let u2=Math.random()
 
-return mean+(Math.random()-0.5)*volatility
+let rand=Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2)
+
+return mean + vol*rand
 
 }
 
@@ -239,49 +158,52 @@ function simular(){
 
 let edad=parseFloat(document.getElementById("edad").value)
 let retiro=parseFloat(document.getElementById("retiro").value)
-let capital=parseFloat(document.getElementById("capital").value)
-let aportacion=parseFloat(document.getElementById("aportacion").value)
-let gasto=parseFloat(document.getElementById("gasto").value)
 
+let capitalInicial=parseFloat(document.getElementById("capital").value)
+let aportacion=parseFloat(document.getElementById("aportacion").value)
+
+let r=parseFloat(document.getElementById("rentabilidad").value)
 let inflacion=parseFloat(document.getElementById("inflacion").value)
-let rentabilidad=parseFloat(document.getElementById("rentabilidad").value)
 
 let años=retiro-edad
 
-let capitalActual=capital
+let simulaciones=1000
 
-let datos=[]
-let labels=[]
+let resultados=[]
 
-for(let i=0;i<=años;i++){
+for(let s=0;s<simulaciones;s++){
 
-let r=randomReturn(rentabilidad)
+let capital=capitalInicial
 
-capitalActual=capitalActual*(1+r)+aportacion*12
+for(let i=0;i<años;i++){
 
-datos.push(capitalActual)
+let retorno=randomNormal(r,0.15)
 
-labels.push("Año "+i)
+capital=capital*(1+retorno)+aportacion*12
 
 }
 
-let gastoFuturo=gasto*Math.pow(1+inflacion,años)
+resultados.push(capital)
 
-let patrimonioObjetivo=(gastoFuturo*12)/0.04
+}
 
-let aportacionNecesaria=
+resultados.sort((a,b)=>a-b)
 
-(patrimonioObjetivo-capital)/(años*12)
+let p10=resultados[Math.floor(simulaciones*0.1)]
+let p50=resultados[Math.floor(simulaciones*0.5)]
+let p90=resultados[Math.floor(simulaciones*0.9)]
+
+let herencia=p50*Math.pow(1+(r-inflacion),20)
 
 document.getElementById("resultado").innerHTML=
 
-"<b>Capital estimado:</b> "+capitalActual.toFixed(0)+" €<br><br>"+
+"<b>Escenario conservador (10%):</b> "+Math.round(p10)+" €<br><br>"+
 
-"<b>Gasto mensual ajustado inflación:</b> "+gastoFuturo.toFixed(0)+" €<br><br>"+
+"<b>Escenario medio:</b> "+Math.round(p50)+" €<br><br>"+
 
-"<b>Patrimonio necesario:</b> "+patrimonioObjetivo.toFixed(0)+" €<br><br>"+
+"<b>Escenario optimista:</b> "+Math.round(p90)+" €<br><br>"+
 
-"<b>Aportación mensual aproximada necesaria:</b> "+aportacionNecesaria.toFixed(0)+" €"
+"<b>Estimación posible herencia (20 años después):</b> "+Math.round(herencia)+" €"
 
 let ctx=document.getElementById("grafico")
 
@@ -289,14 +211,20 @@ if(chart){chart.destroy()}
 
 chart=new Chart(ctx,{
 
-type:'line',
+type:'bar',
 
 data:{
-labels:labels,
+
+labels:["Escenario malo","Escenario medio","Escenario bueno"],
+
 datasets:[{
-label:"Patrimonio estimado",
-data:datos
+
+label:"Capital posible",
+
+data:[p10,p50,p90]
+
 }]
+
 },
 
 options:{responsive:true}
