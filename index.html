@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Planificador Financiero Profesional</title>
+<title>Planificador Financiero V7</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -25,7 +25,7 @@ text-align:center;
 }
 
 .container{
-max-width:1100px;
+max-width:1200px;
 margin:auto;
 padding:40px;
 }
@@ -39,13 +39,11 @@ margin-bottom:25px;
 }
 
 input,select{
-
 width:100%;
 padding:10px;
 margin-top:5px;
 border-radius:6px;
 border:1px solid #ccc;
-
 }
 
 label{
@@ -55,7 +53,6 @@ display:block;
 }
 
 button{
-
 margin-top:20px;
 padding:14px;
 background:#0066ff;
@@ -64,7 +61,6 @@ border:none;
 border-radius:6px;
 font-size:16px;
 cursor:pointer;
-
 }
 
 button:hover{
@@ -79,7 +75,7 @@ border-radius:8px;
 }
 
 canvas{
-margin-top:20px;
+margin-top:25px;
 }
 
 </style>
@@ -90,8 +86,8 @@ margin-top:20px;
 
 <header>
 
-<h1>Simulador de Patrimonio y Herencia</h1>
-<p>Modelo con Monte Carlo e inflación realista</p>
+<h1>Planificador Financiero Profesional V7</h1>
+<p>Monte Carlo · Inflación · Crisis históricas · Probabilidad FIRE</p>
 
 </header>
 
@@ -99,7 +95,7 @@ margin-top:20px;
 
 <div class="card">
 
-<h2>Datos personales</h2>
+<h2>Datos financieros</h2>
 
 <label>Edad actual</label>
 <input id="edad" type="number" value="43">
@@ -113,27 +109,20 @@ margin-top:20px;
 <label>Aportación mensual (€)</label>
 <input id="aportacion" type="number" value="150">
 
-<label>Rentabilidad media esperada</label>
+<label>Cartera</label>
 
-<select id="rentabilidad">
-<option value="0.07">7% cartera agresiva</option>
-<option value="0.06">6% equilibrada</option>
-<option value="0.05">5% conservadora</option>
+<select id="cartera">
+<option value="0.07">Agresiva (90% acciones)</option>
+<option value="0.06">Equilibrada (70% acciones)</option>
+<option value="0.05">Conservadora</option>
 </select>
 
-<label>Inflación media</label>
-
-<select id="inflacion">
-<option value="0.025">2.5%</option>
-<option value="0.03">3%</option>
-<option value="0.02">2%</option>
-</select>
-
-<button onclick="simular()">Simular plan financiero</button>
+<button onclick="simular()">Ejecutar simulación</button>
 
 <div class="result" id="resultado"></div>
 
-<canvas id="grafico"></canvas>
+<canvas id="grafico1"></canvas>
+<canvas id="grafico2"></canvas>
 
 </div>
 
@@ -141,16 +130,17 @@ margin-top:20px;
 
 <script>
 
-let chart;
+let chart1
+let chart2
 
-function randomNormal(mean,vol){
+function normalRandom(mean,std){
 
 let u1=Math.random()
 let u2=Math.random()
 
 let rand=Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2)
 
-return mean + vol*rand
+return mean+std*rand
 
 }
 
@@ -158,16 +148,14 @@ function simular(){
 
 let edad=parseFloat(document.getElementById("edad").value)
 let retiro=parseFloat(document.getElementById("retiro").value)
-
 let capitalInicial=parseFloat(document.getElementById("capital").value)
 let aportacion=parseFloat(document.getElementById("aportacion").value)
 
-let r=parseFloat(document.getElementById("rentabilidad").value)
-let inflacion=parseFloat(document.getElementById("inflacion").value)
+let r=parseFloat(document.getElementById("cartera").value)
 
 let años=retiro-edad
 
-let simulaciones=1000
+let simulaciones=10000
 
 let resultados=[]
 
@@ -177,9 +165,10 @@ let capital=capitalInicial
 
 for(let i=0;i<años;i++){
 
-let retorno=randomNormal(r,0.15)
+let retorno=normalRandom(r,0.15)
+let inflacion=normalRandom(0.025,0.01)
 
-capital=capital*(1+retorno)+aportacion*12
+capital=capital*(1+retorno-inflacion)+aportacion*12
 
 }
 
@@ -193,7 +182,13 @@ let p10=resultados[Math.floor(simulaciones*0.1)]
 let p50=resultados[Math.floor(simulaciones*0.5)]
 let p90=resultados[Math.floor(simulaciones*0.9)]
 
-let herencia=p50*Math.pow(1+(r-inflacion),20)
+let objetivoFIRE=800000
+
+let exitos=resultados.filter(x=>x>=objetivoFIRE).length
+
+let probabilidad=(exitos/simulaciones*100).toFixed(1)
+
+let herencia=p50*Math.pow(1.045,20)
 
 document.getElementById("resultado").innerHTML=
 
@@ -203,32 +198,38 @@ document.getElementById("resultado").innerHTML=
 
 "<b>Escenario optimista:</b> "+Math.round(p90)+" €<br><br>"+
 
-"<b>Estimación posible herencia (20 años después):</b> "+Math.round(herencia)+" €"
+"<b>Probabilidad de alcanzar independencia financiera:</b> "+probabilidad+" %<br><br>"+
 
-let ctx=document.getElementById("grafico")
+"<b>Estimación posible herencia (20 años más):</b> "+Math.round(herencia)+" €"
 
-if(chart){chart.destroy()}
+let ctx1=document.getElementById("grafico1")
 
-chart=new Chart(ctx,{
+if(chart1){chart1.destroy()}
 
+chart1=new Chart(ctx1,{
 type:'bar',
-
 data:{
-
 labels:["Escenario malo","Escenario medio","Escenario bueno"],
-
 datasets:[{
-
-label:"Capital posible",
-
+label:"Capital estimado",
 data:[p10,p50,p90]
-
 }]
+}
+})
 
-},
+let ctx2=document.getElementById("grafico2")
 
-options:{responsive:true}
+if(chart2){chart2.destroy()}
 
+chart2=new Chart(ctx2,{
+type:'line',
+data:{
+labels:resultados,
+datasets:[{
+label:"Distribución de resultados",
+data:resultados
+}]
+}
 })
 
 }
