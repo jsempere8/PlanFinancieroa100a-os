@@ -1,88 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-<title>Planificador Financiero V9</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Plan de Inversión V10</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#eef3f8;
-margin:0;
-color:#222;
-}
-
-header{
-background:#0a2540;
-color:white;
-padding:30px;
-text-align:center;
+font-family: Arial, Helvetica, sans-serif;
+background:#f4f6f8;
+margin:40px;
+color:#1a1a1a;
+line-height:1.6;
 }
 
 .container{
-max-width:1200px;
+max-width:900px;
 margin:auto;
-padding:40px;
-}
-
-.card{
 background:white;
-padding:25px;
+padding:40px;
 border-radius:10px;
-box-shadow:0 10px 20px rgba(0,0,0,0.08);
-margin-bottom:25px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-input,select{
+h1{
+text-align:center;
+color:#0a2540;
+}
+
+h2{
+margin-top:40px;
+color:#0a2540;
+border-bottom:2px solid #e6e6e6;
+padding-bottom:5px;
+}
+
+table{
 width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th,td{
+border:1px solid #ddd;
 padding:10px;
-margin-top:5px;
-border-radius:6px;
-border:1px solid #ccc;
+text-align:left;
 }
 
-label{
-font-weight:bold;
+th{
+background:#f2f2f2;
+}
+
+.highlight{
+background:#eef6ff;
+padding:15px;
+border-left:4px solid #2b7cff;
+margin:20px 0;
+}
+
+ul{
 margin-top:10px;
-display:block;
 }
 
-button{
-margin-top:20px;
-padding:14px;
-background:#0066ff;
-color:white;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#004ecc;
-}
-
-.result{
-margin-top:20px;
-background:#f1f5ff;
-padding:20px;
-border-radius:8px;
-}
-
-.explain{
-background:#fafafa;
-border-left:4px solid #0066ff;
-padding:20px;
-margin-top:20px;
-}
-
-canvas{
-margin-top:25px;
+.footer{
+margin-top:40px;
+font-size:14px;
+color:#666;
+text-align:center;
 }
 
 </style>
@@ -91,218 +75,170 @@ margin-top:25px;
 
 <body>
 
-<header>
-
-<h1>Planificador Financiero Profesional</h1>
-<p>Simulación de patrimonio · independencia financiera · herencia</p>
-
-</header>
-
 <div class="container">
 
-<div class="card">
+<h1>Plan de Inversión V10</h1>
 
-<h2>Simulación financiera</h2>
-
-<label>Edad actual</label>
-<input id="edad" type="number" value="43">
-
-<label>Edad objetivo</label>
-<input id="retiro" type="number" value="65">
-
-<label>Capital actual (€)</label>
-<input id="capital" type="number" value="150">
-
-<label>Aportación mensual inicial (€)</label>
-<input id="aportacion" type="number" value="150">
-
-<label>Cartera</label>
-
-<select id="cartera">
-
-<option value="0.07">Agresiva (90% acciones)</option>
-<option value="0.06">Equilibrada</option>
-<option value="0.05">Conservadora</option>
-
-</select>
-
-<button onclick="simular()">Simular plan</button>
-
-<div class="result" id="resultado"></div>
-
-<canvas id="grafico1"></canvas>
-
+<div class="highlight">
+<b>Perfil:</b> Agresivo<br>
+<b>Horizonte:</b> 20+ años<br>
+<b>Objetivo:</b> Crear patrimonio a largo plazo como herencia para tus hijas.
 </div>
 
-<div class="card">
-
-<h2>Objetivo del plan financiero</h2>
-
-<div class="explain">
-
-<p>
-
-El objetivo de este plan es construir un patrimonio que pueda:
-
-</p>
+<h2>Datos del Plan</h2>
 
 <ul>
-
-<li>proteger el poder adquisitivo frente a la inflación</li>
-<li>generar ingresos pasivos en el futuro</li>
-<li>mantenerse durante décadas</li>
-<li>servir como herencia para la siguiente generación</li>
-
+<li>Edad actual: 43</li>
+<li>Aporte actual: 150€/mes</li>
+<li>Objetivo en 2 años: 250€/mes</li>
+<li>Objetivo futuro: 400€/mes</li>
+<li>Estrategia: 90-95% renta variable global</li>
 </ul>
 
+<h2>Cartera V10</h2>
+
+<table>
+<tr>
+<th>Activo</th>
+<th>Tipo</th>
+<th>Peso</th>
+<th>Objetivo</th>
+</tr>
+
+<tr>
+<td>Vanguard Global Stock Index</td>
+<td>Acciones globales</td>
+<td>45%</td>
+<td>Base de crecimiento mundial</td>
+</tr>
+
+<tr>
+<td>Nasdaq 100</td>
+<td>Tecnología EEUU</td>
+<td>20%</td>
+<td>Acelerador de crecimiento</td>
+</tr>
+
+<tr>
+<td>Vanguard Emerging Markets</td>
+<td>Mercados emergentes</td>
+<td>15%</td>
+<td>Capturar expansión económica futura</td>
+</tr>
+
+<tr>
+<td>Vanguard Global Small Caps</td>
+<td>Empresas pequeñas</td>
+<td>10%</td>
+<td>Prima histórica de crecimiento</td>
+</tr>
+
+<tr>
+<td>Fundsmith Equity</td>
+<td>Empresas de calidad</td>
+<td>5%</td>
+<td>Estabilidad dentro de renta variable</td>
+</tr>
+
+<tr>
+<td>Oro</td>
+<td>Activo refugio</td>
+<td>5%</td>
+<td>Protección ante crisis</td>
+</tr>
+
+</table>
+
+<h2>Aportaciones Mensuales</h2>
+
+<h3>150€/mes</h3>
+
+<table>
+<tr><th>Fondo</th><th>Aporte</th></tr>
+<tr><td>Global</td><td>70€</td></tr>
+<tr><td>Nasdaq</td><td>30€</td></tr>
+<tr><td>Emergentes</td><td>22€</td></tr>
+<tr><td>Small Caps</td><td>15€</td></tr>
+<tr><td>Quality</td><td>8€</td></tr>
+<tr><td>Oro</td><td>5€</td></tr>
+</table>
+
+<h3>250€/mes</h3>
+
+<table>
+<tr><th>Fondo</th><th>Aporte</th></tr>
+<tr><td>Global</td><td>112€</td></tr>
+<tr><td>Nasdaq</td><td>50€</td></tr>
+<tr><td>Emergentes</td><td>37€</td></tr>
+<tr><td>Small Caps</td><td>25€</td></tr>
+<tr><td>Quality</td><td>13€</td></tr>
+<tr><td>Oro</td><td>13€</td></tr>
+</table>
+
+<h3>400€/mes</h3>
+
+<table>
+<tr><th>Fondo</th><th>Aporte</th></tr>
+<tr><td>Global</td><td>180€</td></tr>
+<tr><td>Nasdaq</td><td>80€</td></tr>
+<tr><td>Emergentes</td><td>60€</td></tr>
+<tr><td>Small Caps</td><td>40€</td></tr>
+<tr><td>Quality</td><td>20€</td></tr>
+<tr><td>Oro</td><td>20€</td></tr>
+</table>
+
+<h2>Proyección a Largo Plazo</h2>
+
 <p>
-
-El plan está diseñado para que el capital crezca durante la etapa de acumulación y posteriormente pueda generar ingresos mediante una retirada prudente del 3-4% anual.
-
+Suponiendo una rentabilidad media anual entre 7% y 9%.
 </p>
 
-</div>
+<table>
+<tr>
+<th>Aporte mensual</th>
+<th>Capital estimado 25 años</th>
+</tr>
 
-</div>
+<tr>
+<td>150€</td>
+<td>~130.000€</td>
+</tr>
 
-<div class="card">
+<tr>
+<td>250€</td>
+<td>~220.000€</td>
+</tr>
 
-<h2>Por qué usar fondos indexados</h2>
+<tr>
+<td>400€</td>
+<td>~360.000€</td>
+</tr>
 
-<div class="explain">
+</table>
 
-<p>
-
-Los fondos indexados replican índices globales como el MSCI World y permiten invertir en miles de empresas al mismo tiempo.
-
-</p>
+<h2>Reglas del Plan</h2>
 
 <ul>
-
-<li>Costes muy bajos</li>
-<li>Diversificación global</li>
-<li>Históricamente superan a la mayoría de gestores activos</li>
-
+<li>Invertir todos los meses sin fallar</li>
+<li>No vender durante crisis</li>
+<li>Rebalancear una vez al año</li>
+<li>Aumentar aportaciones cuando suba el salario</li>
+<li>Mantener horizonte mínimo de 20 años</li>
 </ul>
 
-<p>
-
-Ejemplos de fondos adecuados:
-
-</p>
+<h2>Riesgos a Tener en Cuenta</h2>
 
 <ul>
-
-<li>Vanguard Global Stock Index</li>
-<li>Amundi MSCI World</li>
-<li>iShares Core MSCI World</li>
-
+<li>Caídas temporales del 40-50%</li>
+<li>Mercados emergentes pueden pasar años sin crecer</li>
+<li>Nasdaq tiene volatilidad alta</li>
 </ul>
 
+<div class="footer">
+Plan V10 – Estrategia de inversión a largo plazo
 </div>
 
 </div>
-
-</div>
-
-<script>
-
-let chart
-
-function normalRandom(mean,std){
-
-let u1=Math.random()
-let u2=Math.random()
-
-let rand=Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2)
-
-return mean+std*rand
-
-}
-
-function simular(){
-
-let edad=parseFloat(document.getElementById("edad").value)
-let retiro=parseFloat(document.getElementById("retiro").value)
-
-let capitalInicial=parseFloat(document.getElementById("capital").value)
-let aportacion=parseFloat(document.getElementById("aportacion").value)
-
-let r=parseFloat(document.getElementById("cartera").value)
-
-let años=retiro-edad
-
-let simulaciones=10000
-
-let resultados=[]
-
-for(let s=0;s<simulaciones;s++){
-
-let capital=capitalInicial
-let aporte=aportacion
-
-for(let i=0;i<años;i++){
-
-let retorno=normalRandom(r,0.15)
-let inflacion=normalRandom(0.025,0.01)
-
-capital=capital*(1+retorno-inflacion)+aporte*12
-
-if(i==2) aporte=250
-if(i==7) aporte=400
-
-}
-
-resultados.push(capital)
-
-}
-
-resultados.sort((a,b)=>a-b)
-
-let p10=resultados[Math.floor(simulaciones*0.1)]
-let p50=resultados[Math.floor(simulaciones*0.5)]
-let p90=resultados[Math.floor(simulaciones*0.9)]
-
-let herencia=p50*Math.pow(1.045,20)
-
-document.getElementById("resultado").innerHTML=
-
-"<b>Escenario conservador:</b> "+Math.round(p10)+" €<br><br>"+
-
-"<b>Escenario medio:</b> "+Math.round(p50)+" €<br><br>"+
-
-"<b>Escenario optimista:</b> "+Math.round(p90)+" €<br><br>"+
-
-"<b>Estimación de patrimonio 20 años después (herencia):</b> "+Math.round(herencia)+" €"
-
-let ctx=document.getElementById("grafico1")
-
-if(chart){chart.destroy()}
-
-chart=new Chart(ctx,{
-
-type:'bar',
-
-data:{
-
-labels:["Escenario malo","Escenario medio","Escenario bueno"],
-
-datasets:[{
-
-label:"Capital estimado",
-
-data:[p10,p50,p90]
-
-}]
-
-}
-
-})
-
-}
-
-</script>
 
 </body>
-
 </html>
