@@ -2,103 +2,42 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Plan Inversión V10 PRO++</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<title>Valoración Fundamental V11</title>
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6f8;
-margin:40px;
-color:#1a1a1a;
+background:#0b0b0b;
+color:white;
+padding:30px;
 }
 
 .container{
-max-width:1000px;
+max-width:900px;
 margin:auto;
-background:white;
-padding:40px;
+background:#161616;
+padding:30px;
 border-radius:10px;
-box-shadow:0 6px 20px rgba(0,0,0,0.08);
-}
-
-h1{
-text-align:center;
-color:#0a2540;
-}
-
-h2{
-margin-top:40px;
-border-bottom:2px solid #eee;
-padding-bottom:5px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
-
-th,td{
-border:1px solid #ddd;
-padding:10px;
-}
-
-th{
-background:#f2f2f2;
-}
-
-.highlight{
-background:#eef6ff;
-padding:15px;
-border-left:4px solid #2b7cff;
-}
-
-.simulator{
-background:#f9fafc;
-padding:20px;
-border-radius:8px;
-margin-top:20px;
 }
 
 input{
-padding:6px;
-margin:5px;
-width:110px;
+width:100%;
+padding:8px;
+margin:5px 0 15px 0;
 }
 
 button{
-background:#2b7cff;
-color:white;
+padding:10px;
+background:#2ecc71;
 border:none;
-padding:10px 16px;
-border-radius:6px;
 cursor:pointer;
 }
 
-button:hover{
-background:#1e5edc;
-}
-
 .result{
-font-size:18px;
-font-weight:bold;
-margin-top:10px;
-}
-
-canvas{
-max-width:520px;
-margin:auto;
-display:block;
-}
-
-.footer{
-margin-top:40px;
-text-align:center;
-font-size:14px;
-color:#666;
+margin-top:20px;
+background:#111;
+padding:20px;
+border-radius:8px;
 }
 
 </style>
@@ -108,203 +47,94 @@ color:#666;
 
 <div class="container">
 
-<h1>Plan de Inversión V10</h1>
+<h2>Modelo Valoración Fundamental V11</h2>
 
-<div class="highlight">
-Perfil: Agresivo<br>
-Horizonte: 20+ años<br>
-Objetivo: Patrimonio a largo plazo para herencia familiar
-</div>
+<label>Precio actual</label>
+<input id="precio">
 
-<h2>Cartera</h2>
+<label>EPS</label>
+<input id="eps">
 
-<table>
-<tr>
-<th>Activo</th>
-<th>Peso</th>
-<th>Objetivo</th>
-</tr>
+<label>Crecimiento anual (%)</label>
+<input id="crecimiento">
 
-<tr><td>Global Index</td><td>45%</td><td>Base crecimiento mundial</td></tr>
-<tr><td>Nasdaq 100</td><td>20%</td><td>Acelerador tecnológico</td></tr>
-<tr><td>Emerging Markets</td><td>15%</td><td>Crecimiento económico</td></tr>
-<tr><td>Small Caps</td><td>10%</td><td>Prima histórica</td></tr>
-<tr><td>Quality</td><td>5%</td><td>Empresas sólidas</td></tr>
-<tr><td>Oro</td><td>5%</td><td>Protección crisis</td></tr>
+<label>Margen neto (%)</label>
+<input id="margen">
 
-</table>
+<label>Volatilidad (0-1)</label>
+<input id="vol">
 
-<h2>Distribución</h2>
+<button onclick="calcular()">Calcular</button>
 
-<canvas id="portfolioChart"></canvas>
-
-<h2>Simulador</h2>
-
-<div class="simulator">
-
-Aporte mensual €
-<input id="monthly" value="150">
-
-Crecimiento anual aporte %
-<input id="salaryGrowth" value="2">
-
-Años
-<input id="years" value="25">
-
-Rentabilidad media %
-<input id="rate" value="8">
-
-Inflación %
-<input id="inflation" value="2.5">
-
-<br><br>
-
-<button onclick="simulate()">Simular</button>
-
-<div class="result" id="result"></div>
-
-<div class="result" id="probability"></div>
-
-</div>
-
-<h2>Crecimiento estimado</h2>
-
-<canvas id="growthChart"></canvas>
-
-<button onclick="window.print()">Guardar / Exportar PDF</button>
-
-<div class="footer">
-Plan V10 PRO++ — Estrategia de inversión a largo plazo
-</div>
+<div class="result" id="resultado"></div>
 
 </div>
 
 <script>
 
-/* gráfico cartera */
+function calcular(){
 
-new Chart(document.getElementById("portfolioChart"),{
+precio = parseFloat(document.getElementById("precio").value)
+eps = parseFloat(document.getElementById("eps").value)
+crecimiento = parseFloat(document.getElementById("crecimiento").value)/100
+margen = parseFloat(document.getElementById("margen").value)/100
+vol = parseFloat(document.getElementById("vol").value)
 
-type:'pie',
-
-data:{
-labels:['Global','Nasdaq','Emergentes','Small Caps','Quality','Oro'],
-datasets:[{
-data:[45,20,15,10,5,5],
-backgroundColor:['#2b7cff','#4aa3ff','#7cc0ff','#a7d6ff','#cfe6ff','#ffd166']
-}]
+if(!precio || !eps || !crecimiento || !margen || !vol){
+alert("Completa todos los campos")
+return
 }
 
-});
+PE = 15
 
-let growthChart;
+valorReal = eps * PE
 
-function randomNormal(mean,sd){
+descuento = (valorReal - precio) / valorReal
 
-let u=Math.random();
-let v=Math.random();
+// Inflación histórica
+inflacion = 0.025
+horizonte = 5
 
-let z=Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+ajusteInflacion = 1 + (inflacion * horizonte)
 
-return mean+z*sd;
+valorRealInflacion = valorReal * ajusteInflacion
 
-}
+// Score value mejorado
+estabilidad = 1 / vol
 
-function simulate(){
+scoreValue = descuento * crecimiento * estabilidad
 
-let monthly=parseFloat(document.getElementById("monthly").value);
-let salaryGrowth=parseFloat(document.getElementById("salaryGrowth").value)/100;
-let years=parseFloat(document.getElementById("years").value);
-let rate=parseFloat(document.getElementById("rate").value)/100;
-let inflation=parseFloat(document.getElementById("inflation").value)/100;
+// margen seguridad
+margenSeguridad = descuento * margen
 
-let simulations=1000;
+// índice calidad
+qualityIndex = (crecimiento + margen) / vol
 
-let results=[];
+// indicador final
+indicador = scoreValue * margenSeguridad * qualityIndex * ajusteInflacion
 
-for(let s=0;s<simulations;s++){
+// precio objetivo
+precioObjetivo = valorRealInflacion * (1 + crecimiento * horizonte)
 
-let capital=0;
-let contribution=monthly;
+document.getElementById("resultado").innerHTML = `
 
-for(let y=0;y<years;y++){
+Valor Real: ${valorReal.toFixed(2)}
 
-let yearlyReturn=randomNormal(rate,0.15);
+Valor Real Ajustado Inflación: ${valorRealInflacion.toFixed(2)}
 
-for(let m=0;m<12;m++){
+Descuento: ${(descuento*100).toFixed(2)}%
 
-capital=capital*(1+yearlyReturn/12)+contribution;
+Score Value: ${scoreValue.toFixed(2)}
 
-}
+Quality Index: ${qualityIndex.toFixed(2)}
 
-contribution*=1+salaryGrowth;
+Indicador Final V11: ${indicador.toFixed(2)}
 
-}
+Precio Objetivo 5 años: ${precioObjetivo.toFixed(2)}
 
-results.push(capital);
-
-}
-
-results.sort((a,b)=>a-b);
-
-let median=Math.round(results[Math.floor(simulations/2)]);
-let real=Math.round(median/Math.pow(1+inflation,years));
-
-let prob500=results.filter(x=>x>=500000).length/simulations*100;
-let prob1M=results.filter(x=>x>=1000000).length/simulations*100;
-
-document.getElementById("result").innerHTML=
-"Capital mediano: "+median.toLocaleString()+" €<br>"+
-"Capital real ajustado inflación: "+real.toLocaleString()+" €";
-
-document.getElementById("probability").innerHTML=
-"Probabilidad alcanzar 500k: "+prob500.toFixed(1)+"%<br>"+
-"Probabilidad alcanzar 1M: "+prob1M.toFixed(1)+"%";
-
-/* gráfico simple crecimiento */
-
-let labels=[];
-let values=[];
-
-let capital=0;
-let contribution=monthly;
-
-for(let y=1;y<=years;y++){
-
-for(let m=0;m<12;m++){
-
-capital=capital*(1+rate/12)+contribution;
+`
 
 }
-
-labels.push(y);
-values.push(capital);
-
-contribution*=1+salaryGrowth;
-
-}
-
-if(growthChart) growthChart.destroy();
-
-growthChart=new Chart(document.getElementById("growthChart"),{
-
-type:'line',
-
-data:{
-labels:labels,
-datasets:[{
-label:"Capital estimado",
-data:values,
-borderColor:"#2b7cff",
-fill:false
-}]
-}
-
-});
-
-}
-
-simulate();
 
 </script>
 
