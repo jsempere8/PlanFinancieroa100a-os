@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
-<title>Family Wealth System</title>
+<title>Planificador de Independencia Financiera</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
 body{
-font-family:Arial, sans-serif;
+font-family:Arial;
+background:#f4f7fb;
 margin:0;
-background:#f4f6f9;
-color:#222;
+color:#333;
 }
 
 header{
-background:#0d1b2a;
+background:#0a2540;
 color:white;
 padding:30px;
 text-align:center;
@@ -24,277 +25,257 @@ text-align:center;
 .container{
 max-width:1000px;
 margin:auto;
-padding:30px;
+padding:40px;
 }
 
 .card{
 background:white;
-padding:25px;
+padding:30px;
 border-radius:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
 margin-bottom:30px;
 }
 
 h2{
-border-bottom:2px solid #eee;
-padding-bottom:10px;
+color:#0a2540;
 }
 
 label{
+font-weight:bold;
 display:block;
-margin-top:10px;
+margin-top:15px;
 }
 
-input{
+input,select{
 width:100%;
-padding:8px;
+padding:10px;
 margin-top:5px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 button{
 margin-top:20px;
-padding:10px 20px;
-background:#1b263b;
+padding:14px;
+background:#0066ff;
 color:white;
 border:none;
-border-radius:5px;
+border-radius:6px;
+font-size:16px;
 cursor:pointer;
 }
 
-.result{
-font-size:22px;
-margin-top:20px;
-color:#0d1b2a;
-font-weight:bold;
+button:hover{
+background:#004ecc;
 }
 
-footer{
-text-align:center;
+.result{
+margin-top:20px;
 padding:20px;
-color:#666;
+background:#eef3ff;
+border-radius:8px;
+}
+
+.explain{
+background:#fafafa;
+padding:20px;
+border-left:5px solid #0066ff;
+margin-top:20px;
+}
+
+canvas{
+margin-top:30px;
 }
 
 </style>
-</head>
 
+</head>
 
 <body>
 
 <header>
 
-<h1>Fondo de Patrimonio Familiar</h1>
-<p>Sistema de crecimiento patrimonial a largo plazo</p>
+<h1>Planificador de Independencia Financiera</h1>
+
+<p>Simulación basada en inflación histórica y rentabilidad realista de carteras diversificadas.</p>
 
 </header>
 
-
 <div class="container">
 
-
 <div class="card">
 
-<h2>Simulador de Patrimonio</h2>
+<h2>Datos financieros</h2>
 
-<label>Capital inicial (€)</label>
-<input id="capital" value="50000">
+<label>Edad actual</label>
+<input type="number" id="edad">
 
-<label>Aportación anual (€)</label>
-<input id="aporte" value="6000">
+<label>Edad objetivo</label>
+<input type="number" id="retiro">
 
-<label>Rentabilidad anual esperada (%)</label>
-<input id="rent" value="7">
+<label>Ahorro actual (€)</label>
+<input type="number" id="capital">
 
-<label>Inflación anual (%)</label>
-<input id="inflacion" value="2.5">
+<label>Aportación mensual (€)</label>
+<input type="number" id="aportacion">
 
-<label>Años de inversión</label>
-<input id="years" value="100">
+<label>Gasto mensual deseado hoy (€)</label>
+<input type="number" id="gasto">
 
-<button onclick="simulate()">Simular</button>
+<label>Inflación esperada</label>
+
+<select id="inflacion">
+<option value="0.02">2%</option>
+<option value="0.025">2.5%</option>
+<option value="0.03">3%</option>
+</select>
+
+<label>Rentabilidad cartera</label>
+
+<select id="rentabilidad">
+<option value="0.04">4% Conservadora</option>
+<option value="0.05">5% Equilibrada</option>
+<option value="0.06">6% Indexada global</option>
+<option value="0.07">7% Histórica renta variable</option>
+</select>
+
+<button onclick="calcular()">Simular</button>
 
 <div class="result" id="resultado"></div>
-<div class="result" id="resultadoReal"></div>
+
+<canvas id="grafico"></canvas>
 
 </div>
 
-
 <div class="card">
 
-<h2>Hipótesis del modelo</h2>
+<h2>Cartera ejemplo (indexada)</h2>
 
-<p>
+<div class="explain">
 
-Este simulador utiliza datos basados en el comportamiento histórico de los mercados financieros globales.
-
-</p>
+<p>Una cartera diversificada típica podría incluir:</p>
 
 <ul>
 
-<li>Rentabilidad media histórica de acciones globales: ~7-10 % anual</li>
+<li>60% Fondo indexado MSCI World</li>
 
-<li>Rentabilidad media cartera diversificada: ~6-8 % anual</li>
+<li>20% Fondo mercados emergentes</li>
 
-<li>Inflación media histórica economías desarrolladas: ~2-3 %</li>
-
-</ul>
-
-<p>
-
-Para mantener un modelo conservador se utiliza una rentabilidad media del <b>7 %</b> y una inflación media del <b>2.5 %</b>.
-
-</p>
-
-</div>
-
-
-
-<div class="card">
-
-<h2>Objetivo del Fondo de Patrimonio Familiar</h2>
-
-<p>
-
-El objetivo del fondo es preservar y hacer crecer el patrimonio familiar a largo plazo mediante inversión disciplinada y diversificada.
-
-</p>
-
-<p>
-
-No busca especulación ni beneficios rápidos, sino estabilidad y crecimiento sostenido durante décadas.
-
-</p>
-
-<ul>
-
-<li>Protección frente a la inflación</li>
-<li>Crecimiento del capital familiar</li>
-<li>Horizonte multigeneracional</li>
-<li>Disciplina financiera</li>
+<li>20% Bonos globales</li>
 
 </ul>
 
+<p>Rentabilidad histórica aproximada: **5-7% anual a largo plazo**.</p>
+
 </div>
 
-
+</div>
 
 <div class="card">
 
-<h2>Filosofía de inversión</h2>
+<h2>Interpretación</h2>
 
-<ul>
-
-<li>Diversificación global</li>
-
-<li>Costes bajos</li>
-
-<li>Horizonte de inversión largo</li>
-
-<li>Rebalanceo periódico</li>
-
-<li>Disciplina frente a ciclos económicos</li>
-
-</ul>
+<div class="explain">
 
 <p>
 
-Este sistema está diseñado para funcionar durante más de 100 años, permitiendo que el patrimonio se beneficie del poder del interés compuesto.
+El patrimonio objetivo se calcula usando la **regla del 4%**, utilizada en planificación financiera.
+
+</p>
+
+<p>
+
+Si tu gasto anual es 24.000€, necesitarías aproximadamente:
+
+</p>
+
+<p>
+
+<strong>600.000€ de patrimonio invertido</strong>
+
+</p>
+
+<p>
+
+Esto permite retirar dinero sin agotar el capital durante décadas.
 
 </p>
 
 </div>
 
-
-
-<div class="card">
-
-<h2>Interpretación de los parámetros</h2>
-
-<p>
-
-<b>Capital inicial</b>  
-Cantidad de dinero con la que empieza el fondo.
-
-</p>
-
-<p>
-
-<b>Aportación anual</b>  
-Cantidad añadida al fondo cada año.
-
-</p>
-
-<p>
-
-<b>Rentabilidad esperada</b>  
-Media histórica aproximada de una cartera diversificada global.
-
-</p>
-
-<p>
-
-<b>Inflación</b>  
-Pérdida media anual del poder adquisitivo del dinero.
-
-</p>
-
-<p>
-
-<b>Años</b>  
-Horizonte temporal de la inversión.
-
-</p>
-
 </div>
 
-
 </div>
-
-
-<footer>
-
-Sistema de patrimonio familiar a largo plazo
-
-</footer>
-
 
 <script>
 
-function simulate(){
+let chart;
 
-let capital=parseFloat(document.getElementById("capital").value);
+function calcular(){
 
-let aporte=parseFloat(document.getElementById("aporte").value);
+let edad = parseFloat(document.getElementById("edad").value)
+let retiro = parseFloat(document.getElementById("retiro").value)
+let capital = parseFloat(document.getElementById("capital").value)
+let aportacion = parseFloat(document.getElementById("aportacion").value)
+let gasto = parseFloat(document.getElementById("gasto").value)
 
-let rent=parseFloat(document.getElementById("rent").value)/100;
+let inflacion = parseFloat(document.getElementById("inflacion").value)
+let rentabilidad = parseFloat(document.getElementById("rentabilidad").value)
 
-let inflacion=parseFloat(document.getElementById("inflacion").value)/100;
+let años = retiro-edad
 
-let years=parseInt(document.getElementById("years").value);
+let capitalActual = capital
 
+let datos=[]
+let labels=[]
 
-let patrimonio=capital;
+for(let i=0;i<=años;i++){
 
-for(let i=1;i<=years;i++){
+capitalActual = capitalActual*(1+rentabilidad)+aportacion*12
 
-patrimonio = patrimonio*(1+rent) + aporte;
+datos.push(capitalActual)
+
+labels.push("Año "+i)
 
 }
 
-let realReturn = ((1+rent)/(1+inflacion))-1;
+let gastoFuturo = gasto*Math.pow(1+inflacion,años)
 
-let patrimonioReal = capital;
+let patrimonioObjetivo=(gastoFuturo*12)/0.04
 
-for(let i=1;i<=years;i++){
+document.getElementById("resultado").innerHTML=
 
-patrimonioReal = patrimonioReal*(1+realReturn) + aporte;
+"<b>Capital estimado:</b> "+capitalActual.toFixed(0)+" €<br><br>"+
 
+"<b>Gasto mensual ajustado inflación:</b> "+gastoFuturo.toFixed(0)+" €<br><br>"+
+
+"<b>Patrimonio necesario:</b> "+patrimonioObjetivo.toFixed(0)+" €<br><br>"+
+
+(capitalActual>patrimonioObjetivo?
+
+"<span style='color:green'><b>✔ Alcanzarías el objetivo</b></span>":
+
+"<span style='color:red'><b>✘ No alcanzarías el objetivo</b></span>")
+
+let ctx=document.getElementById("grafico")
+
+if(chart){
+chart.destroy()
 }
 
-document.getElementById("resultado").innerHTML =
-"Patrimonio final nominal: €"+Math.round(patrimonio).toLocaleString();
-
-document.getElementById("resultadoReal").innerHTML =
-"Patrimonio ajustado a inflación: €"+Math.round(patrimonioReal).toLocaleString();
+chart=new Chart(ctx,{
+type:'line',
+data:{
+labels:labels,
+datasets:[{
+label:"Crecimiento patrimonio",
+data:datos
+}]
+},
+options:{
+responsive:true
+}
+})
 
 }
 
