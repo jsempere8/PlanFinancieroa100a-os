@@ -1,213 +1,304 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-
 <meta charset="UTF-8">
-<title>Simulador Patrimonio Familiar 100 Años</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Family Wealth System</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#f3f4f6;
-padding:40px;
+font-family:Arial, sans-serif;
+margin:0;
+background:#f4f6f9;
+color:#222;
 }
 
-.container{
-max-width:1100px;
-margin:auto;
-background:white;
+header{
+background:#0d1b2a;
+color:white;
 padding:30px;
-border-radius:10px;
-}
-
-input{
-padding:6px;
-margin:4px;
-width:120px;
-}
-
-table{
-border-collapse:collapse;
-width:100%;
-margin-top:20px;
-}
-
-td,th{
-border:1px solid #ddd;
-padding:6px;
 text-align:center;
 }
 
-button{
-padding:10px 20px;
+.container{
+max-width:1000px;
+margin:auto;
+padding:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+margin-bottom:30px;
+}
+
+h2{
+border-bottom:2px solid #eee;
+padding-bottom:10px;
+}
+
+label{
+display:block;
 margin-top:10px;
 }
 
-</style>
+input{
+width:100%;
+padding:8px;
+margin-top:5px;
+}
 
+button{
+margin-top:20px;
+padding:10px 20px;
+background:#1b263b;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.result{
+font-size:22px;
+margin-top:20px;
+color:#0d1b2a;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#666;
+}
+
+</style>
 </head>
+
 
 <body>
 
+<header>
+
+<h1>Fondo de Patrimonio Familiar</h1>
+<p>Sistema de crecimiento patrimonial a largo plazo</p>
+
+</header>
+
+
 <div class="container">
 
-<h1>Simulador Patrimonio Familiar 100 Años</h1>
 
-<h2>Variables</h2>
+<div class="card">
 
-Capital inicial (€)
-<input id="capital" value="10000"><br>
+<h2>Simulador de Patrimonio</h2>
 
-Aportación mensual (€)
-<input id="aporte" value="250"><br>
+<label>Capital inicial (€)</label>
+<input id="capital" value="50000">
 
-Rentabilidad anual (%)
-<input id="rentabilidad" value="6"><br>
+<label>Aportación anual (€)</label>
+<input id="aporte" value="6000">
 
-Inflación (%)
-<input id="inflacion" value="2.5"><br>
+<label>Rentabilidad anual esperada (%)</label>
+<input id="rent" value="7">
 
-Crisis cada X años
-<input id="crisis" value="10"><br>
+<label>Inflación anual (%)</label>
+<input id="inflacion" value="2.5">
 
-Impacto crisis (%)
-<input id="impacto" value="35"><br>
+<label>Años de inversión</label>
+<input id="years" value="100">
 
-Duración simulación (años)
-<input id="anos" value="100"><br>
+<button onclick="simulate()">Simular</button>
 
-Edad actual
-<input id="edadPadre" value="42"><br>
-
-Edad hija mayor
-<input id="edadMayor" value="10"><br>
-
-Edad hija menor
-<input id="edadMenor" value="4"><br>
-
-<button onclick="simular()">Simular</button>
-
-<h2>Resultados</h2>
-
-<p id="capitalFinal"></p>
-<p id="renta"></p>
-<p id="independencia"></p>
-
-<canvas id="grafico"></canvas>
-
-<h2>Evolución generacional</h2>
-
-<table id="tabla">
-
-<tr>
-<th>Año</th>
-<th>Edad Padre</th>
-<th>Edad Hija Mayor</th>
-<th>Edad Hija Menor</th>
-<th>Capital</th>
-<th>Renta 3%</th>
-</tr>
-
-</table>
+<div class="result" id="resultado"></div>
+<div class="result" id="resultadoReal"></div>
 
 </div>
 
+
+<div class="card">
+
+<h2>Hipótesis del modelo</h2>
+
+<p>
+
+Este simulador utiliza datos basados en el comportamiento histórico de los mercados financieros globales.
+
+</p>
+
+<ul>
+
+<li>Rentabilidad media histórica de acciones globales: ~7-10 % anual</li>
+
+<li>Rentabilidad media cartera diversificada: ~6-8 % anual</li>
+
+<li>Inflación media histórica economías desarrolladas: ~2-3 %</li>
+
+</ul>
+
+<p>
+
+Para mantener un modelo conservador se utiliza una rentabilidad media del <b>7 %</b> y una inflación media del <b>2.5 %</b>.
+
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Objetivo del Fondo de Patrimonio Familiar</h2>
+
+<p>
+
+El objetivo del fondo es preservar y hacer crecer el patrimonio familiar a largo plazo mediante inversión disciplinada y diversificada.
+
+</p>
+
+<p>
+
+No busca especulación ni beneficios rápidos, sino estabilidad y crecimiento sostenido durante décadas.
+
+</p>
+
+<ul>
+
+<li>Protección frente a la inflación</li>
+<li>Crecimiento del capital familiar</li>
+<li>Horizonte multigeneracional</li>
+<li>Disciplina financiera</li>
+
+</ul>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Filosofía de inversión</h2>
+
+<ul>
+
+<li>Diversificación global</li>
+
+<li>Costes bajos</li>
+
+<li>Horizonte de inversión largo</li>
+
+<li>Rebalanceo periódico</li>
+
+<li>Disciplina frente a ciclos económicos</li>
+
+</ul>
+
+<p>
+
+Este sistema está diseñado para funcionar durante más de 100 años, permitiendo que el patrimonio se beneficie del poder del interés compuesto.
+
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Interpretación de los parámetros</h2>
+
+<p>
+
+<b>Capital inicial</b>  
+Cantidad de dinero con la que empieza el fondo.
+
+</p>
+
+<p>
+
+<b>Aportación anual</b>  
+Cantidad añadida al fondo cada año.
+
+</p>
+
+<p>
+
+<b>Rentabilidad esperada</b>  
+Media histórica aproximada de una cartera diversificada global.
+
+</p>
+
+<p>
+
+<b>Inflación</b>  
+Pérdida media anual del poder adquisitivo del dinero.
+
+</p>
+
+<p>
+
+<b>Años</b>  
+Horizonte temporal de la inversión.
+
+</p>
+
+</div>
+
+
+</div>
+
+
+<footer>
+
+Sistema de patrimonio familiar a largo plazo
+
+</footer>
+
+
 <script>
 
-function simular(){
+function simulate(){
 
-let capital=parseFloat(document.getElementById("capital").value)
-let aporte=parseFloat(document.getElementById("aporte").value)*12
-let r=parseFloat(document.getElementById("rentabilidad").value)/100
-let anos=parseInt(document.getElementById("anos").value)
+let capital=parseFloat(document.getElementById("capital").value);
 
-let crisis=parseInt(document.getElementById("crisis").value)
-let impacto=parseFloat(document.getElementById("impacto").value)/100
+let aporte=parseFloat(document.getElementById("aporte").value);
 
-let edadPadre=parseInt(document.getElementById("edadPadre").value)
-let edadMayor=parseInt(document.getElementById("edadMayor").value)
-let edadMenor=parseInt(document.getElementById("edadMenor").value)
+let rent=parseFloat(document.getElementById("rent").value)/100;
 
-let tabla=document.getElementById("tabla")
+let inflacion=parseFloat(document.getElementById("inflacion").value)/100;
 
-tabla.innerHTML="<tr><th>Año</th><th>Edad Padre</th><th>Edad Hija Mayor</th><th>Edad Hija Menor</th><th>Capital</th><th>Renta</th></tr>"
+let years=parseInt(document.getElementById("years").value);
 
-let labels=[]
-let data=[]
 
-let independencia=0
+let patrimonio=capital;
 
-for(let i=1;i<=anos;i++){
+for(let i=1;i<=years;i++){
 
-let crecimiento=capital*r
-
-capital+=crecimiento+aporte
-
-if(i%crisis===0){
-
-capital=capital*(1-impacto)
+patrimonio = patrimonio*(1+rent) + aporte;
 
 }
 
-let renta=capital*0.03
+let realReturn = ((1+rent)/(1+inflacion))-1;
 
-if(renta>aporte && independencia===0){
+let patrimonioReal = capital;
 
-independencia=i
+for(let i=1;i<=years;i++){
 
-}
-
-let row=tabla.insertRow()
-
-row.insertCell(0).innerHTML=i
-row.insertCell(1).innerHTML=edadPadre+i
-row.insertCell(2).innerHTML=edadMayor+i
-row.insertCell(3).innerHTML=edadMenor+i
-row.insertCell(4).innerHTML=Math.round(capital)
-row.insertCell(5).innerHTML=Math.round(renta)
-
-labels.push(i)
-data.push(capital)
+patrimonioReal = patrimonioReal*(1+realReturn) + aporte;
 
 }
 
-document.getElementById("capitalFinal").innerHTML=
-"Capital final estimado: "+Math.round(capital)+" €"
+document.getElementById("resultado").innerHTML =
+"Patrimonio final nominal: €"+Math.round(patrimonio).toLocaleString();
 
-document.getElementById("renta").innerHTML=
-"Renta anual sostenible (3%): "+Math.round(capital*0.03)+" €"
-
-document.getElementById("independencia").innerHTML=
-"El fondo supera tus aportaciones en el año: "+independencia
-
-crearGrafico(labels,data)
-
-}
-
-function crearGrafico(labels,data){
-
-let ctx=document.getElementById("grafico")
-
-new Chart(ctx,{
-type:'line',
-data:{
-labels:labels,
-datasets:[{
-label:'Patrimonio familiar',
-data:data,
-borderColor:'green',
-fill:false
-}]
-}
-})
+document.getElementById("resultadoReal").innerHTML =
+"Patrimonio ajustado a inflación: €"+Math.round(patrimonioReal).toLocaleString();
 
 }
 
 </script>
 
 </body>
-
 </html>
