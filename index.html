@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Planificador Financiero Profesional V8</title>
+<title>Planificador Financiero V9</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -93,8 +93,8 @@ margin-top:25px;
 
 <header>
 
-<h1>Planificador Financiero V8</h1>
-<p>Simulación profesional de patrimonio y herencia</p>
+<h1>Planificador Financiero Profesional</h1>
+<p>Simulación de patrimonio · independencia financiera · herencia</p>
 
 </header>
 
@@ -102,7 +102,7 @@ margin-top:25px;
 
 <div class="card">
 
-<h2>Datos financieros</h2>
+<h2>Simulación financiera</h2>
 
 <label>Edad actual</label>
 <input id="edad" type="number" value="43">
@@ -113,7 +113,7 @@ margin-top:25px;
 <label>Capital actual (€)</label>
 <input id="capital" type="number" value="150">
 
-<label>Aportación mensual (€)</label>
+<label>Aportación mensual inicial (€)</label>
 <input id="aportacion" type="number" value="150">
 
 <label>Cartera</label>
@@ -126,7 +126,7 @@ margin-top:25px;
 
 </select>
 
-<button onclick="simular()">Ejecutar simulación</button>
+<button onclick="simular()">Simular plan</button>
 
 <div class="result" id="resultado"></div>
 
@@ -136,18 +136,46 @@ margin-top:25px;
 
 <div class="card">
 
-<h2>Estrategia de inversión recomendada</h2>
+<h2>Objetivo del plan financiero</h2>
 
 <div class="explain">
 
-<p><b>Objetivo del fondo:</b></p>
-
 <p>
-Construir un patrimonio que pueda generar ingresos pasivos y que,
-si no se consume completamente, se convierta en herencia para las siguientes generaciones.
+
+El objetivo de este plan es construir un patrimonio que pueda:
+
 </p>
 
-<p><b>Por qué usar fondos indexados:</b></p>
+<ul>
+
+<li>proteger el poder adquisitivo frente a la inflación</li>
+<li>generar ingresos pasivos en el futuro</li>
+<li>mantenerse durante décadas</li>
+<li>servir como herencia para la siguiente generación</li>
+
+</ul>
+
+<p>
+
+El plan está diseñado para que el capital crezca durante la etapa de acumulación y posteriormente pueda generar ingresos mediante una retirada prudente del 3-4% anual.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Por qué usar fondos indexados</h2>
+
+<div class="explain">
+
+<p>
+
+Los fondos indexados replican índices globales como el MSCI World y permiten invertir en miles de empresas al mismo tiempo.
+
+</p>
 
 <ul>
 
@@ -157,7 +185,11 @@ si no se consume completamente, se convierta en herencia para las siguientes gen
 
 </ul>
 
-<p><b>Ejemplo de fondos adecuados:</b></p>
+<p>
+
+Ejemplos de fondos adecuados:
+
+</p>
 
 <ul>
 
@@ -166,41 +198,6 @@ si no se consume completamente, se convierta en herencia para las siguientes gen
 <li>iShares Core MSCI World</li>
 
 </ul>
-
-<p>
-Estos fondos invierten en miles de empresas del mundo, lo que reduce el riesgo de depender de una sola empresa o país.
-</p>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>Objetivo financiero</h2>
-
-<div class="explain">
-
-<p>
-
-El objetivo no es simplemente acumular dinero, sino construir un patrimonio que:
-
-</p>
-
-<ul>
-
-<li>proteja contra la inflación</li>
-<li>genere ingresos en el futuro</li>
-<li>pueda mantenerse durante décadas</li>
-
-</ul>
-
-<p>
-
-Con una retirada prudente del 3-4% anual,
-el capital puede durar décadas o incluso seguir creciendo.
-
-</p>
 
 </div>
 
@@ -227,6 +224,7 @@ function simular(){
 
 let edad=parseFloat(document.getElementById("edad").value)
 let retiro=parseFloat(document.getElementById("retiro").value)
+
 let capitalInicial=parseFloat(document.getElementById("capital").value)
 let aportacion=parseFloat(document.getElementById("aportacion").value)
 
@@ -241,13 +239,17 @@ let resultados=[]
 for(let s=0;s<simulaciones;s++){
 
 let capital=capitalInicial
+let aporte=aportacion
 
 for(let i=0;i<años;i++){
 
 let retorno=normalRandom(r,0.15)
 let inflacion=normalRandom(0.025,0.01)
 
-capital=capital*(1+retorno-inflacion)+aportacion*12
+capital=capital*(1+retorno-inflacion)+aporte*12
+
+if(i==2) aporte=250
+if(i==7) aporte=400
 
 }
 
@@ -261,13 +263,17 @@ let p10=resultados[Math.floor(simulaciones*0.1)]
 let p50=resultados[Math.floor(simulaciones*0.5)]
 let p90=resultados[Math.floor(simulaciones*0.9)]
 
+let herencia=p50*Math.pow(1.045,20)
+
 document.getElementById("resultado").innerHTML=
 
 "<b>Escenario conservador:</b> "+Math.round(p10)+" €<br><br>"+
 
 "<b>Escenario medio:</b> "+Math.round(p50)+" €<br><br>"+
 
-"<b>Escenario optimista:</b> "+Math.round(p90)+" €"
+"<b>Escenario optimista:</b> "+Math.round(p90)+" €<br><br>"+
+
+"<b>Estimación de patrimonio 20 años después (herencia):</b> "+Math.round(herencia)+" €"
 
 let ctx=document.getElementById("grafico1")
 
