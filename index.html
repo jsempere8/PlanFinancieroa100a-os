@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<title>Planificador de Independencia Financiera</title>
+<title>Planificador Financiero Pro</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -10,7 +12,7 @@
 
 body{
 font-family:Arial;
-background:#f4f7fb;
+background:#eef2f7;
 margin:0;
 color:#333;
 }
@@ -18,12 +20,12 @@ color:#333;
 header{
 background:#0a2540;
 color:white;
-padding:30px;
+padding:35px;
 text-align:center;
 }
 
 .container{
-max-width:1000px;
+max-width:1100px;
 margin:auto;
 padding:40px;
 }
@@ -32,7 +34,7 @@ padding:40px;
 background:white;
 padding:30px;
 border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+box-shadow:0 10px 20px rgba(0,0,0,0.08);
 margin-bottom:30px;
 }
 
@@ -41,20 +43,23 @@ color:#0a2540;
 }
 
 label{
-font-weight:bold;
 display:block;
-margin-top:15px;
+margin-top:12px;
+font-weight:bold;
 }
 
 input,select{
+
 width:100%;
 padding:10px;
 margin-top:5px;
 border-radius:6px;
 border:1px solid #ccc;
+
 }
 
 button{
+
 margin-top:20px;
 padding:14px;
 background:#0066ff;
@@ -63,28 +68,36 @@ border:none;
 border-radius:6px;
 font-size:16px;
 cursor:pointer;
+
 }
 
 button:hover{
+
 background:#004ecc;
+
 }
 
 .result{
+
 margin-top:20px;
 padding:20px;
-background:#eef3ff;
+background:#f0f4ff;
 border-radius:8px;
+
 }
 
 .explain{
+
 background:#fafafa;
 padding:20px;
 border-left:5px solid #0066ff;
-margin-top:20px;
+
 }
 
 canvas{
-margin-top:30px;
+
+margin-top:25px;
+
 }
 
 </style>
@@ -97,7 +110,7 @@ margin-top:30px;
 
 <h1>Planificador de Independencia Financiera</h1>
 
-<p>Simulación basada en inflación histórica y rentabilidad realista de carteras diversificadas.</p>
+<p>Modelo basado en inflación histórica y rentabilidad de carteras diversificadas</p>
 
 </header>
 
@@ -105,41 +118,44 @@ margin-top:30px;
 
 <div class="card">
 
-<h2>Datos financieros</h2>
+<h2>Datos personales</h2>
 
 <label>Edad actual</label>
-<input type="number" id="edad">
+<input id="edad" type="number">
 
 <label>Edad objetivo</label>
-<input type="number" id="retiro">
+<input id="retiro" type="number">
 
-<label>Ahorro actual (€)</label>
-<input type="number" id="capital">
+<label>Capital actual (€)</label>
+<input id="capital" type="number">
 
 <label>Aportación mensual (€)</label>
-<input type="number" id="aportacion">
+<input id="aportacion" type="number">
 
 <label>Gasto mensual deseado hoy (€)</label>
-<input type="number" id="gasto">
+<input id="gasto" type="number">
 
-<label>Inflación esperada</label>
+<label>Inflación estimada</label>
 
 <select id="inflacion">
+
 <option value="0.02">2%</option>
 <option value="0.025">2.5%</option>
 <option value="0.03">3%</option>
+
 </select>
 
-<label>Rentabilidad cartera</label>
+<label>Rentabilidad media cartera</label>
 
 <select id="rentabilidad">
-<option value="0.04">4% Conservadora</option>
-<option value="0.05">5% Equilibrada</option>
-<option value="0.06">6% Indexada global</option>
-<option value="0.07">7% Histórica renta variable</option>
+
+<option value="0.05">5%</option>
+<option value="0.06">6%</option>
+<option value="0.07">7%</option>
+
 </select>
 
-<button onclick="calcular()">Simular</button>
+<button onclick="simular()">Simular plan</button>
 
 <div class="result" id="resultado"></div>
 
@@ -149,23 +165,29 @@ margin-top:30px;
 
 <div class="card">
 
-<h2>Cartera ejemplo (indexada)</h2>
+<h2>Cartera ejemplo diversificada</h2>
 
 <div class="explain">
 
-<p>Una cartera diversificada típica podría incluir:</p>
-
 <ul>
 
-<li>60% Fondo indexado MSCI World</li>
-
-<li>20% Fondo mercados emergentes</li>
-
-<li>20% Bonos globales</li>
+<li>60% MSCI World Index</li>
+<li>20% Emerging Markets</li>
+<li>20% Global Bonds</li>
 
 </ul>
 
-<p>Rentabilidad histórica aproximada: **5-7% anual a largo plazo**.</p>
+<p>Fondos típicos usados por inversores indexados:</p>
+
+<ul>
+
+<li>Vanguard Global Stock</li>
+<li>Amundi MSCI World</li>
+<li>iShares Core MSCI World</li>
+
+</ul>
+
+<p>Rentabilidad histórica media: 5-7% anual largo plazo.</p>
 
 </div>
 
@@ -173,31 +195,25 @@ margin-top:30px;
 
 <div class="card">
 
-<h2>Interpretación</h2>
+<h2>Cómo se calcula el patrimonio objetivo</h2>
 
 <div class="explain">
 
 <p>
 
-El patrimonio objetivo se calcula usando la **regla del 4%**, utilizada en planificación financiera.
+Se usa la <b>regla del 4%</b> usada en planificación financiera.
 
 </p>
 
 <p>
 
-Si tu gasto anual es 24.000€, necesitarías aproximadamente:
+Patrimonio necesario ≈ gasto anual / 0.04
 
 </p>
 
 <p>
 
-<strong>600.000€ de patrimonio invertido</strong>
-
-</p>
-
-<p>
-
-Esto permite retirar dinero sin agotar el capital durante décadas.
+Esto permite retirar dinero durante décadas sin agotar el capital.
 
 </p>
 
@@ -211,27 +227,37 @@ Esto permite retirar dinero sin agotar el capital durante décadas.
 
 let chart;
 
-function calcular(){
+function randomReturn(mean){
 
-let edad = parseFloat(document.getElementById("edad").value)
-let retiro = parseFloat(document.getElementById("retiro").value)
-let capital = parseFloat(document.getElementById("capital").value)
-let aportacion = parseFloat(document.getElementById("aportacion").value)
-let gasto = parseFloat(document.getElementById("gasto").value)
+let volatility=0.12
 
-let inflacion = parseFloat(document.getElementById("inflacion").value)
-let rentabilidad = parseFloat(document.getElementById("rentabilidad").value)
+return mean+(Math.random()-0.5)*volatility
 
-let años = retiro-edad
+}
 
-let capitalActual = capital
+function simular(){
+
+let edad=parseFloat(document.getElementById("edad").value)
+let retiro=parseFloat(document.getElementById("retiro").value)
+let capital=parseFloat(document.getElementById("capital").value)
+let aportacion=parseFloat(document.getElementById("aportacion").value)
+let gasto=parseFloat(document.getElementById("gasto").value)
+
+let inflacion=parseFloat(document.getElementById("inflacion").value)
+let rentabilidad=parseFloat(document.getElementById("rentabilidad").value)
+
+let años=retiro-edad
+
+let capitalActual=capital
 
 let datos=[]
 let labels=[]
 
 for(let i=0;i<=años;i++){
 
-capitalActual = capitalActual*(1+rentabilidad)+aportacion*12
+let r=randomReturn(rentabilidad)
+
+capitalActual=capitalActual*(1+r)+aportacion*12
 
 datos.push(capitalActual)
 
@@ -239,9 +265,13 @@ labels.push("Año "+i)
 
 }
 
-let gastoFuturo = gasto*Math.pow(1+inflacion,años)
+let gastoFuturo=gasto*Math.pow(1+inflacion,años)
 
 let patrimonioObjetivo=(gastoFuturo*12)/0.04
+
+let aportacionNecesaria=
+
+(patrimonioObjetivo-capital)/(años*12)
 
 document.getElementById("resultado").innerHTML=
 
@@ -251,30 +281,26 @@ document.getElementById("resultado").innerHTML=
 
 "<b>Patrimonio necesario:</b> "+patrimonioObjetivo.toFixed(0)+" €<br><br>"+
 
-(capitalActual>patrimonioObjetivo?
-
-"<span style='color:green'><b>✔ Alcanzarías el objetivo</b></span>":
-
-"<span style='color:red'><b>✘ No alcanzarías el objetivo</b></span>")
+"<b>Aportación mensual aproximada necesaria:</b> "+aportacionNecesaria.toFixed(0)+" €"
 
 let ctx=document.getElementById("grafico")
 
-if(chart){
-chart.destroy()
-}
+if(chart){chart.destroy()}
 
 chart=new Chart(ctx,{
+
 type:'line',
+
 data:{
 labels:labels,
 datasets:[{
-label:"Crecimiento patrimonio",
+label:"Patrimonio estimado",
 data:datos
 }]
 },
-options:{
-responsive:true
-}
+
+options:{responsive:true}
+
 })
 
 }
@@ -282,4 +308,5 @@ responsive:true
 </script>
 
 </body>
+
 </html>
