@@ -1,142 +1,314 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Valoración Fundamental V11</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Financiero Intergeneracional</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-font-family:Arial;
-background:#0b0b0b;
-color:white;
-padding:30px;
-}
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
 
-.container{
-max-width:900px;
-margin:auto;
-background:#161616;
-padding:30px;
-border-radius:10px;
-}
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
 
-input{
-width:100%;
-padding:8px;
-margin:5px 0 15px 0;
-}
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
 
-button{
-padding:10px;
-background:#2ecc71;
-border:none;
-cursor:pointer;
-}
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
 
-.result{
-margin-top:20px;
-background:#111;
-padding:20px;
-border-radius:8px;
-}
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
 
-</style>
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--primary);
+        }
+
+        .result-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1rem;
+        }
+
+        .result-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .info-bubble {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .info-bubble strong {
+            color: #166534;
+        }
+
+        .rule-box {
+            background-color: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .rule-box h3 {
+            color: #b45309;
+            margin-top: 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <header>
+        <h1>Guía Financiera Familiar Intergeneracional</h1>
+        <p>Herramienta de planificación para el patrimonio de la familia</p>
+    </header>
 
-<h2>Modelo Valoración Fundamental V11</h2>
+    <div class="container">
+        
+        <div class="card">
+            <h2>1. Los Principios del Patrimonio (Para leer en familia)</h2>
+            <p>Esta sección resume la filosofía detrás del fondo familiar. Es importante que quien herede este sistema entienda <strong>por qué</strong> se ha diseñado así.</p>
+            
+            <div class="rule-box">
+                <h3>Regla 1: El tiempo es más importante que el dinero</h3>
+                <p>El interés compuesto funciona como una bola de nieve. Lo crucial no es acertar qué acción subirá mañana, sino mantener el dinero invertido de forma global durante décadas sin interrumpirlo.</p>
+            </div>
+            
+            <div class="rule-box">
+                <h3>Regla 2: La volatilidad es el peaje, no un peligro</h3>
+                <p>El mercado caerá un 30% o 40% en algunas crisis (como en 2008 o 2020). <strong>No se vende en pánico</strong>. Esas caídas son temporales. El verdadero riesgo permanente es la inflación (que el dinero en el banco pierda valor de compra).</p>
+            </div>
 
-<label>Precio actual</label>
-<input id="precio">
+            <div class="rule-box">
+                <h3>Regla 3: El Vehículo (El Fondo Único)</h3>
+                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World</em>). Este fondo compra automáticamente un "trocito" de las empresas más grandes del mundo desarrollado. Es barato, automático e imbatible a largo plazo.</p>
+            </div>
+        </div>
 
-<label>EPS</label>
-<input id="eps">
+        <div class="card">
+            <h2>2. Simulador de Crecimiento del Fondo</h2>
+            <p>Calcula cómo crecerá el fondo a lo largo de los años. Los resultados se muestran en <strong>euros de hoy</strong> (descontando ya un 3% de inflación anual estimada), para que sepas qué poder adquisitivo real tendrás.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="form-group">
+                        <label for="capital_inicial">Capital Inicial (€)</label>
+                        <input type="number" id="capital_inicial" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="aportacion_mensual">Aportación Mensual (€)</label>
+                        <input type="number" id="aportacion_mensual" value="450" min="0">
+                        <small class="text-muted">Dinero que se ingresa cada mes de forma automática.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="anos">Horizonte Temporal (Años)</label>
+                        <input type="number" id="anos" value="40" min="1">
+                        <small class="text-muted">Años que faltan hasta cobrar las rentas.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="rentabilidad">Rentabilidad Neta Anual (%)</label>
+                        <select id="rentabilidad">
+                            <option value="0.07">7% - Optimista / Media histórica global</option>
+                            <option value="0.05" selected>5% - Moderada</option>
+                            <option value="0.03">3% - Muy Conservadora</option>
+                        </select>
+                    </div>
+                    <button onclick="calcularSimulacion()">Calcular Proyección</button>
+                </div>
+                
+                <div>
+                    <div class="result-box">
+                        <h3>Capital Final (Nominal)</h3>
+                        <div class="result-number" id="res_nominal">0 €</div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">El dinero que verás en la pantalla del banco en el futuro.</p>
+                        
+                        <h3 style="margin-top: 1.5rem;">Poder Adquisitivo (Euros de hoy)</h3>
+                        <div class="result-number" id="res_real" style="color: var(--accent);">0 €</div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Lo que podrás comprar con ese dinero, tras quitarle el 3% de inflación anual.</p>
+                    </div>
 
-<label>Crecimiento anual (%)</label>
-<input id="crecimiento">
+                    <div class="info-bubble">
+                        <strong>Tu esfuerzo real:</strong> Has aportado de tu bolsillo <span id="res_aportado">0 €</span>. Todo el resto del capital es la magia del interés compuesto.
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<label>Margen neto (%)</label>
-<input id="margen">
+        <div class="card">
+            <h2>3. El "Hack" Fiscal: La Plusvalía del Muerto</h2>
+            <p><strong>Nota crítica para el momento de la herencia:</strong></p>
+            <p>Si el fondo se retira en vida, hay que pagar a Hacienda en el IRPF (entre un 19% y un 28%) sobre las ganancias. En un fondo a 40 años, la inmensa mayoría del dinero son ganancias.</p>
+            <p><strong>La estrategia legal:</strong> Si el titular fallece, Hacienda aplica la "Plusvalía del muerto". Los beneficios acumulados durante décadas quedan exentos de IRPF. Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones (que entre padres e hijos tiene altas bonificaciones en muchas comunidades, como Cataluña).</p>
+        </div>
 
-<label>Volatilidad (0-1)</label>
-<input id="vol">
+        <div class="card">
+            <h2>4. Regla de Oro para Vivir de las Rentas</h2>
+            <div class="grid-2">
+                <div>
+                    <p>Cuando llegue el momento de sacar dinero (ya sea para tus hijas o para la jubilación), ¿cuánto se puede retirar sin que el fondo se acabe?</p>
+                    <p>En el mundo profesional se usa la <strong>Regla del 4%</strong>:</p>
+                    <ul>
+                        <li>Retira como máximo el 4% del valor del fondo durante el primer año.</li>
+                        <li>Los años siguientes, retiras esa misma cantidad actualizada con la inflación.</li>
+                        <li><em>Consejo extra:</em> Si las hijas, además de retirar, siguen aportando un dinero cada mes, el fondo será prácticamente infinito.</li>
+                    </ul>
+                </div>
+                <div class="result-box">
+                    <h3>Calculadora de Renta Segura</h3>
+                    <div class="form-group">
+                        <label for="fondo_acumulado">Tamaño Total del Fondo (€)</label>
+                        <input type="number" id="fondo_acumulado" value="500000" onkeyup="calcularRenta()">
+                    </div>
+                    <h4>Renta segura aproximada:</h4>
+                    <div class="result-number" id="res_renta" style="font-size: 1.5rem;">20.000 € / año</div>
+                    <p>(Equivale a <span id="res_renta_mes">1.666 €</span> brutos al mes)</p>
+                </div>
+            </div>
+        </div>
 
-<button onclick="calcular()">Calcular</button>
+    </div>
 
-<div class="result" id="resultado"></div>
+    <div class="footer">
+        <p>Herramienta diseñada para planificación a largo plazo. Las rentabilidades pasadas no garantizan rentabilidades futuras. Documento de uso interno y formativo familiar.</p>
+    </div>
 
-</div>
+    <script>
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
+        }
 
-<script>
+        function calcularSimulacion() {
+            let pv = parseFloat(document.getElementById('capital_inicial').value) || 0;
+            let pmt = parseFloat(document.getElementById('aportacion_mensual').value) || 0;
+            let years = parseFloat(document.getElementById('anos').value) || 0;
+            let r_annual = parseFloat(document.getElementById('rentabilidad').value);
+            let infl = 0.03;
 
-function calcular(){
+            let r_m = r_annual / 12;
+            let n = years * 12;
+            
+            let fv = pv;
+            for(let i=0; i<n; i++) {
+                fv = fv * (1 + r_m) + pmt;
+            }
 
-precio = parseFloat(document.getElementById("precio").value)
-eps = parseFloat(document.getElementById("eps").value)
-crecimiento = parseFloat(document.getElementById("crecimiento").value)/100
-margen = parseFloat(document.getElementById("margen").value)/100
-vol = parseFloat(document.getElementById("vol").value)
+            let fv_real = fv / Math.pow((1 + infl), years);
+            let total_aportado = pv + (pmt * n);
 
-if(!precio || !eps || !crecimiento || !margen || !vol){
-alert("Completa todos los campos")
-return
-}
+            document.getElementById('res_nominal').innerText = formatMoney(fv);
+            document.getElementById('res_real').innerText = formatMoney(fv_real);
+            document.getElementById('res_aportado').innerText = formatMoney(total_aportado);
+        }
 
-PE = 15
+        function calcularRenta() {
+            let capital = parseFloat(document.getElementById('fondo_acumulado').value) || 0;
+            let renta_anual = capital * 0.04;
+            let renta_mes = renta_anual / 12;
+            
+            document.getElementById('res_renta').innerText = formatMoney(renta_anual) + " / año";
+            document.getElementById('res_renta_mes').innerText = formatMoney(renta_mes);
+        }
 
-valorReal = eps * PE
-
-descuento = (valorReal - precio) / valorReal
-
-// Inflación histórica
-inflacion = 0.025
-horizonte = 5
-
-ajusteInflacion = 1 + (inflacion * horizonte)
-
-valorRealInflacion = valorReal * ajusteInflacion
-
-// Score value mejorado
-estabilidad = 1 / vol
-
-scoreValue = descuento * crecimiento * estabilidad
-
-// margen seguridad
-margenSeguridad = descuento * margen
-
-// índice calidad
-qualityIndex = (crecimiento + margen) / vol
-
-// indicador final
-indicador = scoreValue * margenSeguridad * qualityIndex * ajusteInflacion
-
-// precio objetivo
-precioObjetivo = valorRealInflacion * (1 + crecimiento * horizonte)
-
-document.getElementById("resultado").innerHTML = `
-
-Valor Real: ${valorReal.toFixed(2)}
-
-Valor Real Ajustado Inflación: ${valorRealInflacion.toFixed(2)}
-
-Descuento: ${(descuento*100).toFixed(2)}%
-
-Score Value: ${scoreValue.toFixed(2)}
-
-Quality Index: ${qualityIndex.toFixed(2)}
-
-Indicador Final V11: ${indicador.toFixed(2)}
-
-Precio Objetivo 5 años: ${precioObjetivo.toFixed(2)}
-
-`
-
-}
-
-</script>
-
+        window.onload = function() {
+            calcularSimulacion();
+            calcularRenta();
+        };
+    </script>
 </body>
 </html>
