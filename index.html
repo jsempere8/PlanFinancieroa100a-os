@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Plan de Inversión V10</title>
+<title>Plan de Inversión V10 PRO</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
 body{
-font-family: Arial, Helvetica, sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 background:#f4f6f8;
 margin:40px;
 color:#1a1a1a;
@@ -15,12 +17,12 @@ line-height:1.6;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 background:white;
 padding:40px;
 border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
 }
 
 h1{
@@ -58,7 +60,36 @@ border-left:4px solid #2b7cff;
 margin:20px 0;
 }
 
-ul{
+button{
+background:#2b7cff;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+margin-top:15px;
+}
+
+button:hover{
+background:#1e5edc;
+}
+
+.simulator{
+background:#f9fafc;
+padding:20px;
+border-radius:8px;
+margin-top:20px;
+}
+
+input{
+padding:8px;
+margin:5px;
+width:120px;
+}
+
+.result{
+font-size:20px;
+font-weight:bold;
 margin-top:10px;
 }
 
@@ -69,8 +100,13 @@ color:#666;
 text-align:center;
 }
 
-</style>
+canvas{
+max-width:450px;
+margin:auto;
+display:block;
+}
 
+</style>
 </head>
 
 <body>
@@ -109,7 +145,7 @@ text-align:center;
 <td>Vanguard Global Stock Index</td>
 <td>Acciones globales</td>
 <td>45%</td>
-<td>Base de crecimiento mundial</td>
+<td>Base del crecimiento mundial</td>
 </tr>
 
 <tr>
@@ -123,7 +159,7 @@ text-align:center;
 <td>Vanguard Emerging Markets</td>
 <td>Mercados emergentes</td>
 <td>15%</td>
-<td>Capturar expansión económica futura</td>
+<td>Crecimiento económico futuro</td>
 </tr>
 
 <tr>
@@ -137,7 +173,7 @@ text-align:center;
 <td>Fundsmith Equity</td>
 <td>Empresas de calidad</td>
 <td>5%</td>
-<td>Estabilidad dentro de renta variable</td>
+<td>Estabilidad empresarial</td>
 </tr>
 
 <tr>
@@ -148,6 +184,10 @@ text-align:center;
 </tr>
 
 </table>
+
+<h2>Distribución de Cartera</h2>
+
+<canvas id="portfolioChart"></canvas>
 
 <h2>Aportaciones Mensuales</h2>
 
@@ -189,10 +229,6 @@ text-align:center;
 
 <h2>Proyección a Largo Plazo</h2>
 
-<p>
-Suponiendo una rentabilidad media anual entre 7% y 9%.
-</p>
-
 <table>
 <tr>
 <th>Aporte mensual</th>
@@ -216,6 +252,27 @@ Suponiendo una rentabilidad media anual entre 7% y 9%.
 
 </table>
 
+<h2>Simulador de Inversión</h2>
+
+<div class="simulator">
+
+<label>Aporte mensual (€)</label>
+<input id="monthly" value="150">
+
+<label>Años</label>
+<input id="years" value="25">
+
+<label>Rentabilidad (%)</label>
+<input id="rate" value="8">
+
+<br>
+
+<button onclick="simulate()">Calcular</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
 <h2>Reglas del Plan</h2>
 
 <ul>
@@ -223,22 +280,75 @@ Suponiendo una rentabilidad media anual entre 7% y 9%.
 <li>No vender durante crisis</li>
 <li>Rebalancear una vez al año</li>
 <li>Aumentar aportaciones cuando suba el salario</li>
-<li>Mantener horizonte mínimo de 20 años</li>
+<li>Horizonte mínimo 20 años</li>
 </ul>
 
-<h2>Riesgos a Tener en Cuenta</h2>
+<h2>Riesgos</h2>
 
 <ul>
 <li>Caídas temporales del 40-50%</li>
-<li>Mercados emergentes pueden pasar años sin crecer</li>
-<li>Nasdaq tiene volatilidad alta</li>
+<li>Mercados emergentes pueden pasar años planos</li>
+<li>Alta volatilidad tecnológica</li>
 </ul>
 
+<button onclick="window.print()">Guardar / Exportar PDF</button>
+
 <div class="footer">
-Plan V10 – Estrategia de inversión a largo plazo
+Plan V10 PRO — Estrategia de inversión a largo plazo
 </div>
 
 </div>
+
+<script>
+
+const ctx=document.getElementById('portfolioChart');
+
+new Chart(ctx,{
+type:'pie',
+data:{
+labels:[
+'Global',
+'Nasdaq',
+'Emergentes',
+'Small Caps',
+'Quality',
+'Oro'
+],
+datasets:[{
+data:[45,20,15,10,5,5],
+backgroundColor:[
+'#2b7cff',
+'#4aa3ff',
+'#7cc0ff',
+'#a7d6ff',
+'#cfe6ff',
+'#ffd166'
+]
+}]
+}
+});
+
+function simulate(){
+
+let monthly=parseFloat(document.getElementById("monthly").value);
+let years=parseFloat(document.getElementById("years").value);
+let rate=parseFloat(document.getElementById("rate").value)/100;
+
+let months=years*12;
+let r=rate/12;
+
+let future=monthly*((Math.pow(1+r,months)-1)/r);
+
+future=Math.round(future);
+
+document.getElementById("result").innerHTML=
+"Capital estimado: "+future.toLocaleString()+" €";
+
+}
+
+simulate();
+
+</script>
 
 </body>
 </html>
