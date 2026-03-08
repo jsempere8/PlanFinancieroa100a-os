@@ -4,513 +4,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Financiero Intergeneracional</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #1e3a8a;
             --secondary: #3b82f6;
             --accent: #10b981;
-            --warning: #ef4444;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --border: #e5e7eb;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-main);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
-        }
-
-        h2 {
-            color: var(--primary);
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-            margin-top: 1rem;
-        }
-
-        button:hover {
-            background-color: var(--primary);
-        }
-
-        .result-box {
-            background-color: #eff6ff;
-            border-left: 4px solid var(--secondary);
-            padding: 1.5rem;
-            border-radius: 0 8px 8px 0;
-            height: 100%;
-            box-sizing: border-box;
-        }
-
-        .result-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin: 0.2rem 0;
-        }
-
-        .info-bubble {
-            background-color: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 1rem 0;
-            font-size: 0.95rem;
-        }
-
-        .info-bubble strong {
-            color: #166534;
-        }
-        
-        .warning-bubble {
-            background-color: #fef2f2;
-            border: 1px solid #fecaca;
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 1rem 0;
-            font-size: 0.95rem;
-        }
-        
-        .warning-bubble strong {
-            color: #991b1b;
-        }
-
-        .rule-box {
-            background-color: #fffbeb;
-            border: 1px solid #fcd34d;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        
-        .rule-box h3 {
-            color: #b45309;
-            margin-top: 0;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 350px;
-            width: 100%;
-            margin-top: 2rem;
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .metric-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-        
-        .metric-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        
-        .metric-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-color); margin: 0; padding: 0; }
+        header { background-color: var(--primary); color: white; padding: 2rem 1rem; text-align: center; }
+        header p { margin: 0; opacity: 0.85; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+        .card { background: var(--card-bg); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 2rem; margin-bottom: 2rem; border: 1px solid var(--border); }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 0.5rem; margin-top: 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+        .btn { background-color: var(--secondary); color: white; border: none; padding: 1rem 2rem; font-size: 1.1rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s; margin-top: 1rem; }
+        .btn:hover { background-color: var(--primary); }
+        .result-box { background-color: #eff6ff; border-left: 4px solid var(--secondary); padding: 1.5rem; border-radius: 0 8px 8px 0; box-sizing: border-box; }
+        .info-bubble { background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-size: 0.95rem; }
+        .info-bubble strong { color: #166534; }
+        .warning-bubble { background-color: #fef2f2; border: 1px solid #fecaca; padding: 1rem; border-radius: 6px; margin: 1rem 0; font-size: 0.95rem; }
+        .warning-bubble strong { color: #991b1b; }
+        .rule-box { background-color: #fffbeb; border: 1px solid #fcd34d; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; }
+        .rule-box h3 { color: #b45309; margin-top: 0; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+        .metric-card { background: white; padding: 1rem; border-radius: 6px; border: 1px solid var(--border); }
+        .metric-title { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .metric-value { font-size: 1.2rem; font-weight: bold; color: var(--primary); margin-top: 0.3rem; }
+        .fase-box { background: #f9fafb; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid var(--border); }
+        .inline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .label-sm { font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 0.4rem; }
+        .chart-wrap { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); position: relative; height: 380px; }
+        .footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; }
+        #status-msg { margin-top: 0.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; min-height: 1.4rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Guía Financiera Familiar Intergeneracional</h1>
-        <p>Herramienta de planificación para el patrimonio de la familia</p>
-    </header>
+<header>
+    <h1>Guía Financiera Familiar Intergeneracional</h1>
+    <p>Herramienta de planificación para el patrimonio de la familia</p>
+</header>
 
-    <div class="container">
-        
-        <div class="card">
-            <h2>1. Los Principios del Patrimonio (El Manifiesto)</h2>
-            <p>Esta sección resume la filosofía detrás del fondo familiar. Quien herede este sistema debe entender <strong>por qué</strong> se ha diseñado así.</p>
-            
-            <div class="rule-box">
-                <h3>Regla 1: El tiempo es la palanca</h3>
-                <p>El interés compuesto funciona como una bola de nieve. Lo crucial no es acertar qué acción subirá mañana, sino mantener el dinero invertido de forma global durante décadas sin interrumpirlo. <strong>Nunca se interrumpe la aportación mensual.</strong></p>
-            </div>
-            
-            <div class="rule-box">
-                <h3>Regla 2: La volatilidad es el peaje, no un peligro</h3>
-                <p>El mercado caerá un 30% o 40% en algunas crisis. <strong>No se vende en pánico</strong>. Esas caídas son temporales y nos permiten comprar más barato con nuestra aportación mensual.</p>
-            </div>
+<div class="container">
 
-            <div class="rule-box">
-                <h3>Regla 3: El Vehículo (El Fondo Único)</h3>
-                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World - IE00BYX5NX33</em>). Este fondo compra automáticamente un pedazo de las ~1.500 empresas más grandes del mundo. Es barato, automático e imbatible a largo plazo.</p>
-            </div>
+    <div class="card">
+        <h2>1. Los Principios del Patrimonio (El Manifiesto)</h2>
+        <div class="rule-box">
+            <h3>Regla 1: El tiempo es la palanca</h3>
+            <p>El interés compuesto funciona como una bola de nieve. Lo crucial no es acertar qué acción sube mañana, sino mantener el dinero invertido durante décadas sin interrumpirlo. <strong>Nunca se interrumpe la aportación mensual.</strong></p>
         </div>
-
-        <div class="card">
-            <h2>2. Simulador de Crecimiento (Previsión Montecarlo)</h2>
-            <p>Calcula cómo crecerá el fondo. En lugar de usar una rentabilidad fija e irreal, esta herramienta ejecuta <strong>500 simulaciones</strong> aleatorias (Montecarlo) aplicando la volatilidad histórica real de la bolsa. Te mostrará el escenario medio y los peores/mejores escenarios posibles.</p>
-            
-            <div class="grid-2">
-                <div>
-                    <div class="form-group">
-                        <label for="capital_inicial">Capital Inicial Actual (€)</label>
-                        <input type="number" id="capital_inicial" value="0" min="0">
-                    </div>
-                    
-                    <div style="background: #f9fafb; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
-                        <label style="color: #4b5563;">Fase 1: Aportación a Corto Plazo</label>
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="flex: 1;">
-                                <label for="aportacion_fase1" style="font-size:0.9rem;">Mensualidad (€)</label>
-                                <input type="number" id="aportacion_fase1" value="150" min="0">
-                            </div>
-                            <div style="flex: 1;">
-                                <label for="anos_fase1" style="font-size:0.9rem;">Durante (Años)</label>
-                                <input type="number" id="anos_fase1" value="2" min="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="background: #f9fafb; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
-                        <label style="color: #4b5563;">Fase 2: Aportación a Largo Plazo</label>
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="flex: 1;">
-                                <label for="aportacion_fase2" style="font-size:0.9rem;">Mensualidad (€)</label>
-                                <input type="number" id="aportacion_fase2" value="450" min="0">
-                            </div>
-                            <div style="flex: 1;">
-                                <label for="anos_fase2" style="font-size:0.9rem;">Durante (Años)</label>
-                                <input type="number" id="anos_fase2" value="38" min="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button onclick="ejecutarMontecarlo()" id="btn_montecarlo">Ejecutar Simulación Montecarlo</button>
-                </div>
-                
-                <div>
-                    <div class="result-box">
-                        <h3>Capital Final en Euros de Hoy</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -10px;">Ya descontando un 3% de inflación anual</p>
-                        
-                        <div class="metrics-grid" style="grid-template-columns: 1fr; gap: 0.5rem;">
-                            <div class="metric-card" style="border-color: var(--secondary);">
-                                <div class="metric-title" style="color: var(--secondary);">Escenario Medio (Probable)</div>
-                                <div class="metric-value" id="res_medio" style="font-size: 1.8rem;">0 €</div>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <div class="metric-card" style="flex: 1; background: #fef2f2; border-color: #fecaca;">
-                                    <div class="metric-title" style="color: #991b1b;">Peor Escenario (10%)</div>
-                                    <div class="metric-value" id="res_pesimista" style="color: #991b1b; font-size: 1.1rem;">0 €</div>
-                                </div>
-                                <div class="metric-card" style="flex: 1; background: #f0fdf4; border-color: #bbf7d0;">
-                                    <div class="metric-title" style="color: #166534;">Mejor Escenario (10%)</div>
-                                    <div class="metric-value" id="res_optimista" style="color: #166534; font-size: 1.1rem;">0 €</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-bubble" style="margin-top: 1rem; padding: 0.8rem;">
-                            <strong>Dinero de tu bolsillo:</strong> <span id="res_aportado_av">0 €</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container" style="height: 400px;">
-                <canvas id="montecarloChart"></canvas>
-            </div>
+        <div class="rule-box">
+            <h3>Regla 2: La volatilidad es el peaje, no el peligro</h3>
+            <p>El mercado caerá un 30–40% en algunas crisis. <strong>No se vende en pánico.</strong> Esas caídas son temporales. El verdadero riesgo permanente es la inflación: el dinero en el banco que pierde valor de compra cada año.</p>
         </div>
-
-        <div class="card">
-            <h2>3. El "Hack" Fiscal: La Plusvalía del Muerto</h2>
-            <p><strong>Nota crítica para el momento de la herencia:</strong></p>
-            <p>Si el fondo se vende en vida, hay que pagar a Hacienda en el IRPF (entre un 19% y un 28%) sobre las ganancias.</p>
-            <div class="info-bubble">
-                <strong>La estrategia legal:</strong> Si el titular fallece y no ha vendido, Hacienda aplica la "Plusvalía del muerto". Todos los beneficios acumulados durante décadas <strong>quedan exentos de IRPF</strong>. Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones.
-            </div>
+        <div class="rule-box">
+            <h3>Regla 3: El Vehículo (Un Solo Fondo)</h3>
+            <p>El patrimonio está invertido en un Fondo Indexado Global (<em>Fidelity MSCI World — IE00BYX5NX33</em>). Compra automáticamente las ~1.500 mayores empresas del mundo. Coste anual: solo 0,12%. Automático, barato e imbatible a largo plazo.</p>
         </div>
-
-        <div class="card">
-            <h2>4. Plan de Extracción Segura (Regla del 4%)</h2>
-            <div class="grid-2">
-                <div>
-                    <p>¿Cuánto se puede sacar al año sin descapitalizar el fondo heredado?</p>
-                    <p>Usaremos la <strong>Regla del 4% (Estudio Trinity)</strong>:</p>
-                    <ul>
-                        <li>Retirar como máximo el 4% del valor del fondo en el primer año.</li>
-                        <li><strong>Impacto Fiscal:</strong> Al sacar rentas, SÍ se pagan impuestos por las ganancias generadas desde que se heredó. El cálculo ya descuenta un 19% de IRPF.</li>
-                    </ul>
-                    <div class="warning-bubble">
-                        <strong>Condición vital:</strong> El dinero que no se saca <strong>debe seguir invertido en el fondo indexado global</strong>.
-                    </div>
-                </div>
-                
-                <div class="result-box">
-                    <h3>Calculadora de Renta Neta Mensual</h3>
-                    <div class="form-group">
-                        <label for="fondo_heredado">Valor del Fondo a heredar (€)</label>
-                        <input type="number" id="fondo_heredado" value="500000" onkeyup="calcularRentaAvanzada()">
-                    </div>
-                    
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-title">Retiro Anual (4%)</div>
-                            <div class="metric-value" id="res_renta_bruta">20.000 €</div>
-                        </div>
-                        <div class="metric-card" style="background: #f0fdf4; border-color: #bbf7d0;">
-                            <div class="metric-title">Renta Mensual NETA</div>
-                            <div class="metric-value" id="res_renta_neta_mes" style="font-size: 1.5rem; color: #166534;">1.350 €</div>
-                            <div style="font-size: 0.75rem; color: #166534;">(Ya descontando ~19% IRPF)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        let myChart = null;
+    <div class="card">
+        <h2>2. Simulador Montecarlo (500 Futuros Posibles)</h2>
+        <p>En lugar de una rentabilidad fija irreal, esta herramienta genera <strong>500 simulaciones aleatorias</strong> usando la rentabilidad media y volatilidad histórica del MSCI World. Cada simulación vive crisis, subidas y bajadas diferentes.</p>
 
-        function formatMoney(amount) {
-            return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
-        }
-        
-        // Generador de números aleatorios (Distribución Normal - Box-Muller)
-        function randomNormal(mean, stdDev) {
-            let u1 = Math.random();
-            let u2 = Math.random();
-            let randStdNormal = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-            return mean + stdDev * randStdNormal;
-        }
+        <div class="grid-2">
+            <div>
+                <div class="form-group">
+                    <label>Capital Inicial Actual (€)</label>
+                    <input type="number" id="mc_pv" value="0" min="0">
+                </div>
+                <div class="fase-box">
+                    <strong>Fase 1: Aportación a corto plazo</strong>
+                    <div class="inline-grid" style="margin-top:0.6rem;">
+                        <div><span class="label-sm">Mensualidad (€)</span><input type="number" id="mc_pmt1" value="150" min="0"></div>
+                        <div><span class="label-sm">Durante (años)</span><input type="number" id="mc_y1" value="2" min="0"></div>
+                    </div>
+                </div>
+                <div class="fase-box">
+                    <strong>Fase 2: Aportación a largo plazo</strong>
+                    <div class="inline-grid" style="margin-top:0.6rem;">
+                        <div><span class="label-sm">Mensualidad (€)</span><input type="number" id="mc_pmt2" value="450" min="0"></div>
+                        <div><span class="label-sm">Durante (años)</span><input type="number" id="mc_y2" value="38" min="0"></div>
+                    </div>
+                </div>
+                <button class="btn" id="mc_btn" onclick="runMontecarlo()">▶ Ejecutar Simulación Montecarlo</button>
+                <div id="status-msg"></div>
+            </div>
 
-        function ejecutarMontecarlo() {
-            let btn = document.getElementById('btn_montecarlo');
-            btn.innerText = "Calculando 500 escenarios...";
-            btn.style.opacity = "0.7";
-            
-            setTimeout(() => {
-                let pv = parseFloat(document.getElementById('capital_inicial').value) || 0;
-                let pmt1 = parseFloat(document.getElementById('aportacion_fase1').value) || 0;
-                let years1 = parseFloat(document.getElementById('anos_fase1').value) || 0;
-                let pmt2 = parseFloat(document.getElementById('aportacion_fase2').value) || 0;
-                let years2 = parseFloat(document.getElementById('anos_fase2').value) || 0;
-                
-                let total_years = years1 + years2;
-                
-                // Parametros MSCI World historicos
-                const mean_return = 0.085; // 8.5% nominal historico anual
-                const std_dev = 0.15;      // 15% volatilidad
-                const infl = 0.03;         // 3% inflacion constante
-                const NUM_SIMULATIONS = 500;
-                
-                let final_results = [];
-                let paths = []; 
-                
-                let total_aportado = pv + (pmt1 * years1 * 12) + (pmt2 * years2 * 12);
+            <div>
+                <div class="result-box">
+                    <h3 style="margin-top:0;">Resultados en Euros de Hoy</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:-0.5rem;">(Descontando 3% de inflación anual)</p>
+                    <div style="background:#1e3a8a; color:white; padding:1rem; border-radius:6px; margin-bottom:0.8rem;">
+                        <div style="font-size:0.8rem; opacity:0.7; text-transform:uppercase;">Escenario Medio — Lo más Probable</div>
+                        <div id="mc_medio" style="font-size:2rem; font-weight:bold; margin-top:0.3rem;">—</div>
+                    </div>
+                    <div style="display:flex; gap:0.8rem;">
+                        <div style="flex:1; background:#fef2f2; border:1px solid #fecaca; padding:0.8rem; border-radius:6px;">
+                            <div style="font-size:0.8rem; color:#991b1b; text-transform:uppercase;">Peor 10%</div>
+                            <div id="mc_pesimista" style="font-weight:bold; color:#991b1b; font-size:1.1rem; margin-top:0.3rem;">—</div>
+                        </div>
+                        <div style="flex:1; background:#f0fdf4; border:1px solid #bbf7d0; padding:0.8rem; border-radius:6px;">
+                            <div style="font-size:0.8rem; color:#166534; text-transform:uppercase;">Mejor 10%</div>
+                            <div id="mc_optimista" style="font-weight:bold; color:#166534; font-size:1.1rem; margin-top:0.3rem;">—</div>
+                        </div>
+                    </div>
+                    <div class="info-bubble" style="margin-top:1rem;">
+                        <strong>Aportado de tu bolsillo:</strong> <span id="mc_aportado">—</span><br>
+                        <strong>Probabilidad de superar lo aportado:</strong> <span id="mc_prob">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                for (let sim = 0; sim < NUM_SIMULATIONS; sim++) {
-                    let current_value = pv;
-                    let path = [pv]; 
-                    
-                    for (let y = 1; y <= total_years; y++) {
-                        // Rentabilidad aleatoria este año
-                        let annual_return = randomNormal(mean_return, std_dev);
-                        let pmt_annual = (y <= years1) ? (pmt1 * 12) : (pmt2 * 12);
-                        
-                        current_value = current_value * (1 + annual_return) + pmt_annual;
-                        // Si por alguna catastrofe matematica baja de cero, se queda en 0
-                        if(current_value < 0) current_value = 0; 
-                        
-                        path.push(current_value);
-                    }
-                    
-                    let real_value = current_value / Math.pow((1 + infl), total_years);
-                    final_results.push(real_value);
-                    
-                    if (sim < 50) { // Solo dibujamos 50 lineas para no saturar el grafico
-                        paths.push(path);
-                    }
+        <div class="chart-wrap">
+            <canvas id="mcChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>3. El "Hack" Fiscal: La Plusvalía del Muerto</h2>
+        <p>Si el fondo se vende en vida, Hacienda cobra IRPF (19–28%) sobre las ganancias. En un fondo a 40 años eso son cientos de miles de euros de impuestos.</p>
+        <div class="info-bubble">
+            <strong>La estrategia legal:</strong> Si el titular fallece sin haber vendido, se aplica la "Plusvalía del muerto": <strong>todos los beneficios acumulados quedan exentos de IRPF</strong>. Las herederas reciben el fondo a valor de mercado del día del fallecimiento y solo tributan por el Impuesto de Sucesiones (con altas bonificaciones para hijos en Cataluña).
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>4. Plan de Extracción Segura (Regla del 4%)</h2>
+        <div class="grid-2">
+            <div>
+                <p>¿Cuánto se puede sacar al año sin agotar el fondo? Se usa la <strong>Regla del 4% (Estudio Trinity)</strong>:</p>
+                <ul>
+                    <li>Retirar máximo el 4% del valor del fondo el primer año.</li>
+                    <li>Los años siguientes, la misma cantidad más inflación.</li>
+                    <li>El resto del fondo <strong>permanece invertido</strong> y sigue creciendo.</li>
+                </ul>
+                <div class="warning-bubble">
+                    <strong>Condición vital:</strong> El dinero que no se saca NUNCA se pasa a la cuenta corriente. Debe seguir invertido en el fondo global.
+                </div>
+            </div>
+            <div class="result-box">
+                <h3 style="margin-top:0;">Calculadora de Renta Neta</h3>
+                <div class="form-group">
+                    <label>Valor del Fondo a heredar (€)</label>
+                    <input type="number" id="r4_capital" value="500000" oninput="calcRenta()">
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Retiro Anual (4%)</div>
+                        <div class="metric-value" id="r4_bruta">20.000 €</div>
+                    </div>
+                    <div class="metric-card" style="background:#f0fdf4; border-color:#bbf7d0;">
+                        <div class="metric-title">Renta Mensual NETA</div>
+                        <div class="metric-value" id="r4_neta_mes" style="color:#166534; font-size:1.5rem;">1.350 €</div>
+                        <div style="font-size:0.75rem;color:#166534;">Descontando ~19% IRPF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>Herramienta de planificación financiera de uso familiar. Las rentabilidades pasadas no garantizan rentabilidades futuras.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+    var mcChartInstance = null;
+
+    function fmt(n) {
+        return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+    }
+
+    function randNormal(mu, sigma) {
+        var u1, u2;
+        do { u1 = Math.random(); } while (u1 === 0);
+        u2 = Math.random();
+        var z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        return mu + sigma * z;
+    }
+
+    function runMontecarlo() {
+        var btn = document.getElementById('mc_btn');
+        var msg = document.getElementById('status-msg');
+        btn.disabled = true;
+        btn.textContent = 'Calculando 500 escenarios...';
+        msg.textContent = 'Esto puede tardar unos segundos...';
+
+        setTimeout(function () {
+            var pv   = parseFloat(document.getElementById('mc_pv').value)   || 0;
+            var pmt1 = parseFloat(document.getElementById('mc_pmt1').value) || 0;
+            var y1   = parseFloat(document.getElementById('mc_y1').value)   || 0;
+            var pmt2 = parseFloat(document.getElementById('mc_pmt2').value) || 0;
+            var y2   = parseFloat(document.getElementById('mc_y2').value)   || 0;
+
+            var totalYears = y1 + y2;
+            var N = 500;
+            var MU = 0.085, SIGMA = 0.155, INFL = 0.03;
+
+            var totalAportado = pv + pmt1 * y1 * 12 + pmt2 * y2 * 12;
+            var finals = [], paths = [];
+
+            for (var s = 0; s < N; s++) {
+                var v = pv;
+                var path = [v];
+                for (var yr = 1; yr <= totalYears; yr++) {
+                    var r = randNormal(MU, SIGMA);
+                    var pmt = (yr <= y1) ? pmt1 * 12 : pmt2 * 12;
+                    v = v * (1 + r) + pmt;
+                    if (v < 0) v = 0;
+                    path.push(v);
                 }
-                
-                final_results.sort((a, b) => a - b);
-                
-                let p10_index = Math.floor(NUM_SIMULATIONS * 0.10); // Peor escenario
-                let p50_index = Math.floor(NUM_SIMULATIONS * 0.50); // Medio
-                let p90_index = Math.floor(NUM_SIMULATIONS * 0.90); // Mejor
-                
-                let pesimista = final_results[p10_index];
-                let medio = final_results[p50_index];
-                let optimista = final_results[p90_index];
-                
-                document.getElementById('res_pesimista').innerText = formatMoney(pesimista);
-                document.getElementById('res_medio').innerText = formatMoney(medio);
-                document.getElementById('res_optimista').innerText = formatMoney(optimista);
-                document.getElementById('res_aportado_av').innerText = formatMoney(total_aportado);
-                
-                actualizarGraficoMontecarlo(total_years, paths);
-                
-                btn.innerText = "Ejecutar Simulación Montecarlo";
-                btn.style.opacity = "1";
-            }, 100);
-        }
-
-        function actualizarGraficoMontecarlo(total_years, paths) {
-            const ctx = document.getElementById('montecarloChart').getContext('2d');
-            
-            if (myChart) {
-                myChart.destroy();
+                finals.push(v / Math.pow(1 + INFL, totalYears));
+                if (s < 60) paths.push(path);
             }
-            
-            let labels = Array.from({length: total_years + 1}, (_, i) => 'Año ' + i);
-            let datasets = [];
-            
-            paths.forEach((path, index) => {
-                datasets.push({
-                    label: 'Simulacion ' + (index+1),
-                     path,
-                    borderColor: 'rgba(59, 130, 246, 0.15)', // Azul transparente
-                    borderWidth: 1.5,
-                    fill: false,
-                    pointRadius: 0,
-                    tension: 0.2
-                });
-            });
-            
-            myChart = new Chart(ctx, {
-                type: 'line',
-                 {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            text: 'Muestra de 50 futuros financieros posibles según la volatilidad del mercado'
-                        },
-                        tooltip: { enabled: false }
+
+            finals.sort(function (a, b) { return a - b; });
+            var prob = finals.filter(function (x) { return x > totalAportado; }).length / N * 100;
+
+            document.getElementById('mc_pesimista').textContent = fmt(finals[Math.floor(N * 0.10)]);
+            document.getElementById('mc_medio').textContent     = fmt(finals[Math.floor(N * 0.50)]);
+            document.getElementById('mc_optimista').textContent = fmt(finals[Math.floor(N * 0.90)]);
+            document.getElementById('mc_aportado').textContent  = fmt(totalAportado);
+            document.getElementById('mc_prob').textContent      = prob.toFixed(0) + '% de las 500 simulaciones';
+
+            drawChart(totalYears, paths);
+
+            btn.disabled = false;
+            btn.textContent = '▶ Ejecutar Simulación Montecarlo';
+            msg.textContent = 'Listo. Cada clic genera 500 escenarios distintos.';
+        }, 80);
+    }
+
+    function drawChart(totalYears, paths) {
+        var labels = [];
+        for (var i = 0; i <= totalYears; i++) labels.push('Año ' + i);
+
+        var datasets = paths.map(function (path) {
+            return {
+                 path,
+                borderColor: 'rgba(59, 130, 246, 0.18)',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                fill: false,
+                tension: 0.3
+            };
+        });
+
+        if (mcChartInstance) { mcChartInstance.destroy(); mcChartInstance = null; }
+
+        var ctx = document.getElementById('mcChart').getContext('2d');
+        mcChartInstance = new Chart(ctx, {
+            type: 'line',
+             { labels: labels, datasets: datasets },
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: '60 caminos financieros posibles según la volatilidad histórica del mercado (valores nominales)',
+                        font: { size: 13 }
                     },
-                    scales: {
-                        y: { 
-                            ticks: {
-                                callback: function(value) {
-                                    return value / 1000 + 'k €'; 
-                                }
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function (v) {
+                                if (v >= 1000000) return (v/1000000).toFixed(1) + 'M €';
+                                return Math.round(v / 1000) + 'k €';
                             }
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+    }
 
-        function calcularRentaAvanzada() {
-            let capital = parseFloat(document.getElementById('fondo_heredado').value) || 0;
-            let renta_anual_bruta = capital * 0.04;
-            
-            let impuestos = renta_anual_bruta * 0.19; 
-            let renta_anual_neta = renta_anual_bruta - impuestos;
-            let renta_mes_neta = renta_anual_neta / 12;
-            
-            document.getElementById('res_renta_bruta').innerText = formatMoney(renta_anual_bruta);
-            document.getElementById('res_renta_neta_mes').innerText = formatMoney(renta_mes_neta);
-        }
+    function calcRenta() {
+        var capital = parseFloat(document.getElementById('r4_capital').value) || 0;
+        var bruta   = capital * 0.04;
+        var neta    = bruta * 0.81 / 12;
+        document.getElementById('r4_bruta').textContent    = fmt(bruta);
+        document.getElementById('r4_neta_mes').textContent = fmt(neta);
+    }
 
-        window.onload = function() {
-            ejecutarMontecarlo();
-            calcularRentaAvanzada();
-        };
-    </script>
+    document.addEventListener('DOMContentLoaded', function () {
+        calcRenta();
+        runMontecarlo();
+    });
+</script>
 </body>
 </html>
