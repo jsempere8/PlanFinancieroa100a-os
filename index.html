@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Financiero Intergeneracional</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #1e3a8a;
             --secondary: #3b82f6;
             --accent: #10b981;
+            --warning: #ef4444;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #1f2937;
@@ -33,7 +35,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
@@ -67,7 +69,7 @@
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         label {
@@ -97,6 +99,7 @@
             cursor: pointer;
             width: 100%;
             transition: background-color 0.3s;
+            margin-top: 1rem;
         }
 
         button:hover {
@@ -108,14 +111,15 @@
             border-left: 4px solid var(--secondary);
             padding: 1.5rem;
             border-radius: 0 8px 8px 0;
-            margin-top: 1rem;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .result-number {
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary);
-            margin: 0.5rem 0;
+            margin: 0.2rem 0;
         }
 
         .info-bubble {
@@ -130,6 +134,19 @@
         .info-bubble strong {
             color: #166534;
         }
+        
+        .warning-bubble {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .warning-bubble strong {
+            color: #991b1b;
+        }
 
         .rule-box {
             background-color: #fffbeb;
@@ -142,6 +159,41 @@
         .rule-box h3 {
             color: #b45309;
             margin-top: 0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
         }
 
         .footer {
@@ -162,102 +214,146 @@
     <div class="container">
         
         <div class="card">
-            <h2>1. Los Principios del Patrimonio (Para leer en familia)</h2>
-            <p>Esta sección resume la filosofía detrás del fondo familiar. Es importante que quien herede este sistema entienda <strong>por qué</strong> se ha diseñado así.</p>
+            <h2>1. Los Principios del Patrimonio (El Manifiesto)</h2>
+            <p>Esta sección resume la filosofía detrás del fondo familiar. Quien herede este sistema debe entender <strong>por qué</strong> se ha diseñado así.</p>
             
             <div class="rule-box">
-                <h3>Regla 1: El tiempo es más importante que el dinero</h3>
-                <p>El interés compuesto funciona como una bola de nieve. Lo crucial no es acertar qué acción subirá mañana, sino mantener el dinero invertido de forma global durante décadas sin interrumpirlo.</p>
+                <h3>Regla 1: El tiempo es la palanca</h3>
+                <p>El interés compuesto funciona como una bola de nieve. Lo crucial no es acertar qué acción subirá mañana, sino mantener el dinero invertido de forma global durante décadas sin interrumpirlo. <strong>Nunca se interrumpe la aportación mensual.</strong></p>
             </div>
             
             <div class="rule-box">
                 <h3>Regla 2: La volatilidad es el peaje, no un peligro</h3>
-                <p>El mercado caerá un 30% o 40% en algunas crisis (como en 2008 o 2020). <strong>No se vende en pánico</strong>. Esas caídas son temporales. El verdadero riesgo permanente es la inflación (que el dinero en el banco pierda valor de compra).</p>
+                <p>El mercado caerá un 30% o 40% en algunas crisis (como en 2008 o 2020). <strong>No se vende en pánico</strong>. Esas caídas son temporales y nos permiten comprar más barato con nuestra aportación mensual. El verdadero riesgo permanente es la inflación (que el dinero en efectivo pierda valor de compra).</p>
             </div>
 
             <div class="rule-box">
                 <h3>Regla 3: El Vehículo (El Fondo Único)</h3>
-                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World</em>). Este fondo compra automáticamente un "trocito" de las empresas más grandes del mundo desarrollado. Es barato, automático e imbatible a largo plazo.</p>
+                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World - IE00BYX5NX33</em>). Este fondo compra automáticamente un pedazo de las ~1.500 empresas más grandes del mundo desarrollado. Es barato (0.12%), automático e imbatible a largo plazo.</p>
             </div>
         </div>
 
         <div class="card">
             <h2>2. Simulador de Crecimiento del Fondo</h2>
-            <p>Calcula cómo crecerá el fondo a lo largo de los años. Los resultados se muestran en <strong>euros de hoy</strong> (descontando ya un 3% de inflación anual estimada), para que sepas qué poder adquisitivo real tendrás.</p>
+            <p>Calcula cómo crecerá el fondo. Permite planificar dos fases de aportación (ej. empezar con poco ahora y subir la cuota cuando se acabe de pagar el coche).</p>
             
             <div class="grid-2">
                 <div>
                     <div class="form-group">
-                        <label for="capital_inicial">Capital Inicial (€)</label>
+                        <label for="capital_inicial">Capital Inicial Actual (€)</label>
                         <input type="number" id="capital_inicial" value="0" min="0">
                     </div>
-                    <div class="form-group">
-                        <label for="aportacion_mensual">Aportación Mensual (€)</label>
-                        <input type="number" id="aportacion_mensual" value="450" min="0">
-                        <small class="text-muted">Dinero que se ingresa cada mes de forma automática.</small>
+                    
+                    <div style="background: #f9fafb; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                        <label style="color: #4b5563;">Fase 1: Aportación a Corto Plazo</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <label for="aportacion_fase1" style="font-size:0.9rem;">Mensualidad (€)</label>
+                                <input type="number" id="aportacion_fase1" value="150" min="0">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="anos_fase1" style="font-size:0.9rem;">Durante (Años)</label>
+                                <input type="number" id="anos_fase1" value="2" min="0">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="anos">Horizonte Temporal (Años)</label>
-                        <input type="number" id="anos" value="40" min="1">
-                        <small class="text-muted">Años que faltan hasta cobrar las rentas.</small>
+
+                    <div style="background: #f9fafb; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                        <label style="color: #4b5563;">Fase 2: Aportación a Largo Plazo</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <label for="aportacion_fase2" style="font-size:0.9rem;">Mensualidad (€)</label>
+                                <input type="number" id="aportacion_fase2" value="450" min="0">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="anos_fase2" style="font-size:0.9rem;">Durante (Años)</label>
+                                <input type="number" id="anos_fase2" value="38" min="0">
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="rentabilidad">Rentabilidad Neta Anual (%)</label>
+                        <label for="rentabilidad">Rentabilidad Neta Anual Esperada (%)</label>
                         <select id="rentabilidad">
-                            <option value="0.07">7% - Optimista / Media histórica global</option>
-                            <option value="0.05" selected>5% - Moderada</option>
-                            <option value="0.03">3% - Muy Conservadora</option>
+                            <option value="0.08">8% - Media histórica MSCI World (Nominal)</option>
+                            <option value="0.06">6% - Moderada</option>
+                            <option value="0.04" selected>4% - Muy Conservadora / Real (ya descontando inflación)</option>
                         </select>
                     </div>
-                    <button onclick="calcularSimulacion()">Calcular Proyección</button>
+                    <button onclick="calcularSimulacionAvanzada()">Actualizar Proyección</button>
                 </div>
                 
                 <div>
                     <div class="result-box">
                         <h3>Capital Final (Nominal)</h3>
-                        <div class="result-number" id="res_nominal">0 €</div>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">El dinero que verás en la pantalla del banco en el futuro.</p>
+                        <div class="result-number" id="res_nominal_av">0 €</div>
                         
-                        <h3 style="margin-top: 1.5rem;">Poder Adquisitivo (Euros de hoy)</h3>
-                        <div class="result-number" id="res_real" style="color: var(--accent);">0 €</div>
-                        <p style="font-size: 0.9rem; color: var(--text-muted);">Lo que podrás comprar con ese dinero, tras quitarle el 3% de inflación anual.</p>
-                    </div>
-
-                    <div class="info-bubble">
-                        <strong>Tu esfuerzo real:</strong> Has aportado de tu bolsillo <span id="res_aportado">0 €</span>. Todo el resto del capital es la magia del interés compuesto.
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-title">Dinero de tu bolsillo</div>
+                                <div class="metric-value" id="res_aportado_av">0 €</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-title">Intereses (La Magia)</div>
+                                <div class="metric-value" id="res_intereses_av" style="color: var(--accent);">0 €</div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-bubble" style="margin-top: 1.5rem;">
+                            <strong>Ajuste por Inflación (3% anual):</strong><br>
+                            Ese capital final equivaldrá a un poder de compra de <span id="res_real_av" style="font-weight: bold; font-size: 1.2rem;">0 €</span> en dinero de hoy.
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="crecimientoChart"></canvas>
             </div>
         </div>
 
         <div class="card">
             <h2>3. El "Hack" Fiscal: La Plusvalía del Muerto</h2>
             <p><strong>Nota crítica para el momento de la herencia:</strong></p>
-            <p>Si el fondo se retira en vida, hay que pagar a Hacienda en el IRPF (entre un 19% y un 28%) sobre las ganancias. En un fondo a 40 años, la inmensa mayoría del dinero son ganancias.</p>
-            <p><strong>La estrategia legal:</strong> Si el titular fallece, Hacienda aplica la "Plusvalía del muerto". Los beneficios acumulados durante décadas quedan exentos de IRPF. Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones (que entre padres e hijos tiene altas bonificaciones en muchas comunidades, como Cataluña).</p>
+            <p>Si el fondo se vende en vida, hay que pagar a Hacienda en el IRPF (entre un 19% y un 28%) sobre las ganancias.</p>
+            <div class="info-bubble">
+                <strong>La estrategia legal:</strong> Si el titular fallece y no ha vendido, Hacienda aplica la "Plusvalía del muerto". Todos los beneficios acumulados durante décadas <strong>quedan exentos de IRPF</strong> (el contador se pone a cero). Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones (que entre padres e hijos tiene altas bonificaciones en muchas CC.AA. como Cataluña).
+            </div>
         </div>
 
         <div class="card">
-            <h2>4. Regla de Oro para Vivir de las Rentas</h2>
+            <h2>4. Plan de Extracción Segura (Regla del 4%)</h2>
             <div class="grid-2">
                 <div>
-                    <p>Cuando llegue el momento de sacar dinero (ya sea para tus hijas o para la jubilación), ¿cuánto se puede retirar sin que el fondo se acabe?</p>
-                    <p>En el mundo profesional se usa la <strong>Regla del 4%</strong>:</p>
+                    <p>El objetivo no es "gastar" el fondo, sino convertirlo en una máquina de rentas para las herederas. ¿Cuánto se puede sacar al año sin descapitalizar el fondo?</p>
+                    <p>Usaremos la <strong>Regla del 4% (Estudio Trinity)</strong>:</p>
                     <ul>
-                        <li>Retira como máximo el 4% del valor del fondo durante el primer año.</li>
-                        <li>Los años siguientes, retiras esa misma cantidad actualizada con la inflación.</li>
-                        <li><em>Consejo extra:</em> Si las hijas, además de retirar, siguen aportando un dinero cada mes, el fondo será prácticamente infinito.</li>
+                        <li>Retirar como máximo el 4% del valor del fondo en el primer año.</li>
+                        <li><strong>Impacto Fiscal:</strong> Al sacar rentas, SÍ se pagan impuestos por las ganancias (19-28%). El cálculo ya te muestra lo que te llega limpio al bolsillo.</li>
                     </ul>
-                </div>
-                <div class="result-box">
-                    <h3>Calculadora de Renta Segura</h3>
-                    <div class="form-group">
-                        <label for="fondo_acumulado">Tamaño Total del Fondo (€)</label>
-                        <input type="number" id="fondo_acumulado" value="500000" onkeyup="calcularRenta()">
+                    <div class="warning-bubble">
+                        <strong>Condición vital:</strong> Para que esta regla funcione, el dinero que no se saca <strong>debe seguir invertido en el fondo indexado global</strong>. Si lo pasas a la cuenta del banco, la inflación y los retiros lo agotarán rápido.
                     </div>
-                    <h4>Renta segura aproximada:</h4>
-                    <div class="result-number" id="res_renta" style="font-size: 1.5rem;">20.000 € / año</div>
-                    <p>(Equivale a <span id="res_renta_mes">1.666 €</span> brutos al mes)</p>
+                </div>
+                
+                <div class="result-box">
+                    <h3>Calculadora de Renta Neta Mensual</h3>
+                    <div class="form-group">
+                        <label for="fondo_heredado">Valor del Fondo a heredar (€)</label>
+                        <input type="number" id="fondo_heredado" value="500000" onkeyup="calcularRentaAvanzada()">
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-title">Retiro Anual (4%)</div>
+                            <div class="metric-value" id="res_renta_bruta">20.000 €</div>
+                        </div>
+                        <div class="metric-card" style="background: #f0fdf4; border-color: #bbf7d0;">
+                            <div class="metric-title">Renta Mensual NETA limpia</div>
+                            <div class="metric-value" id="res_renta_neta_mes" style="font-size: 1.5rem; color: #166534;">1.350 €</div>
+                            <div style="font-size: 0.75rem; color: #166534;">(Ya descontando ~19% IRPF)</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,49 +361,140 @@
     </div>
 
     <div class="footer">
-        <p>Herramienta diseñada para planificación a largo plazo. Las rentabilidades pasadas no garantizan rentabilidades futuras. Documento de uso interno y formativo familiar.</p>
+        <p>Herramienta diseñada para planificación a largo plazo familiar. Las rentabilidades pasadas no garantizan rentabilidades futuras. Documento de uso interno.</p>
     </div>
 
     <script>
+        let myChart = null;
+
         function formatMoney(amount) {
             return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
         }
 
-        function calcularSimulacion() {
+        function calcularSimulacionAvanzada() {
             let pv = parseFloat(document.getElementById('capital_inicial').value) || 0;
-            let pmt = parseFloat(document.getElementById('aportacion_mensual').value) || 0;
-            let years = parseFloat(document.getElementById('anos').value) || 0;
+            let pmt1 = parseFloat(document.getElementById('aportacion_fase1').value) || 0;
+            let years1 = parseFloat(document.getElementById('anos_fase1').value) || 0;
+            let pmt2 = parseFloat(document.getElementById('aportacion_fase2').value) || 0;
+            let years2 = parseFloat(document.getElementById('anos_fase2').value) || 0;
+            
             let r_annual = parseFloat(document.getElementById('rentabilidad').value);
-            let infl = 0.03;
-
+            let infl = 0.03; 
             let r_m = r_annual / 12;
-            let n = years * 12;
+            
+            let total_months = (years1 + years2) * 12;
+            let months1 = years1 * 12;
             
             let fv = pv;
-            for(let i=0; i<n; i++) {
-                fv = fv * (1 + r_m) + pmt;
+            let total_aportado = pv;
+            
+            let labels = [];
+            let data_aportado = [];
+            let data_intereses = [];
+            
+            labels.push('Año 0');
+            data_aportado.push(pv);
+            data_intereses.push(0);
+
+            for(let m = 1; m <= total_months; m++) {
+                let current_pmt = (m <= months1) ? pmt1 : pmt2;
+                
+                fv = fv * (1 + r_m) + current_pmt;
+                total_aportado += current_pmt;
+                
+                if (m % 12 === 0) {
+                    let year = m / 12;
+                    labels.push('Año ' + year);
+                    data_aportado.push(total_aportado);
+                    data_intereses.push(fv - total_aportado);
+                }
             }
 
-            let fv_real = fv / Math.pow((1 + infl), years);
-            let total_aportado = pv + (pmt * n);
+            let total_years = years1 + years2;
+            let fv_real = fv / Math.pow((1 + infl), total_years);
+            let intereses = fv - total_aportado;
 
-            document.getElementById('res_nominal').innerText = formatMoney(fv);
-            document.getElementById('res_real').innerText = formatMoney(fv_real);
-            document.getElementById('res_aportado').innerText = formatMoney(total_aportado);
+            document.getElementById('res_nominal_av').innerText = formatMoney(fv);
+            document.getElementById('res_aportado_av').innerText = formatMoney(total_aportado);
+            document.getElementById('res_intereses_av').innerText = formatMoney(intereses);
+            document.getElementById('res_real_av').innerText = formatMoney(fv_real);
+            
+            actualizarGrafico(labels, data_aportado, data_intereses);
         }
 
-        function calcularRenta() {
-            let capital = parseFloat(document.getElementById('fondo_acumulado').value) || 0;
-            let renta_anual = capital * 0.04;
-            let renta_mes = renta_anual / 12;
+        function actualizarGrafico(labels, aportado, intereses) {
+            const ctx = document.getElementById('crecimientoChart').getContext('2d');
             
-            document.getElementById('res_renta').innerText = formatMoney(renta_anual) + " / año";
-            document.getElementById('res_renta_mes').innerText = formatMoney(renta_mes);
+            if (myChart) {
+                myChart.destroy();
+            }
+            
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Tu Dinero Aportado',
+                            data: aportado,
+                            backgroundColor: '#3b82f6',
+                            stack: 'Stack 0',
+                        },
+                        {
+                            label: 'Intereses Generados (La Magia)',
+                            data: intereses,
+                            backgroundColor: '#10b981',
+                            stack: 'Stack 0',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { stacked: true },
+                        y: { 
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value / 1000 + 'k €'; 
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function calcularRentaAvanzada() {
+            let capital = parseFloat(document.getElementById('fondo_heredado').value) || 0;
+            let renta_anual_bruta = capital * 0.04;
+            
+            let impuestos = renta_anual_bruta * 0.19; 
+            let renta_anual_neta = renta_anual_bruta - impuestos;
+            let renta_mes_neta = renta_anual_neta / 12;
+            
+            document.getElementById('res_renta_bruta').innerText = formatMoney(renta_anual_bruta);
+            document.getElementById('res_renta_neta_mes').innerText = formatMoney(renta_mes_neta);
         }
 
         window.onload = function() {
-            calcularSimulacion();
-            calcularRenta();
+            calcularSimulacionAvanzada();
+            calcularRentaAvanzada();
         };
     </script>
 </body>
