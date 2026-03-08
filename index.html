@@ -224,18 +224,18 @@
             
             <div class="rule-box">
                 <h3>Regla 2: La volatilidad es el peaje, no un peligro</h3>
-                <p>El mercado caerá un 30% o 40% en algunas crisis (como en 2008 o 2020). <strong>No se vende en pánico</strong>. Esas caídas son temporales y nos permiten comprar más barato con nuestra aportación mensual. El verdadero riesgo permanente es la inflación (que el dinero en efectivo pierda valor de compra).</p>
+                <p>El mercado caerá un 30% o 40% en algunas crisis. <strong>No se vende en pánico</strong>. Esas caídas son temporales y nos permiten comprar más barato con nuestra aportación mensual.</p>
             </div>
 
             <div class="rule-box">
                 <h3>Regla 3: El Vehículo (El Fondo Único)</h3>
-                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World - IE00BYX5NX33</em>). Este fondo compra automáticamente un pedazo de las ~1.500 empresas más grandes del mundo desarrollado. Es barato (0.12%), automático e imbatible a largo plazo.</p>
+                <p>El patrimonio está invertido en un Fondo Indexado Global (ej. <em>Fidelity MSCI World - IE00BYX5NX33</em>). Este fondo compra automáticamente un pedazo de las ~1.500 empresas más grandes del mundo. Es barato, automático e imbatible a largo plazo.</p>
             </div>
         </div>
 
         <div class="card">
-            <h2>2. Simulador de Crecimiento del Fondo</h2>
-            <p>Calcula cómo crecerá el fondo. Permite planificar dos fases de aportación (ej. empezar con poco ahora y subir la cuota cuando se acabe de pagar el coche).</p>
+            <h2>2. Simulador de Crecimiento (Previsión Montecarlo)</h2>
+            <p>Calcula cómo crecerá el fondo. En lugar de usar una rentabilidad fija e irreal, esta herramienta ejecuta <strong>500 simulaciones</strong> aleatorias (Montecarlo) aplicando la volatilidad histórica real de la bolsa. Te mostrará el escenario medio y los peores/mejores escenarios posibles.</p>
             
             <div class="grid-2">
                 <div>
@@ -272,43 +272,40 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="rentabilidad">Rentabilidad Neta Anual Esperada (%)</label>
-                        <select id="rentabilidad">
-                            <option value="0.08">8% - Media histórica MSCI World (Nominal)</option>
-                            <option value="0.06">6% - Moderada</option>
-                            <option value="0.04" selected>4% - Muy Conservadora / Real (ya descontando inflación)</option>
-                        </select>
-                    </div>
-                    <button onclick="calcularSimulacionAvanzada()">Actualizar Proyección</button>
+                    <button onclick="ejecutarMontecarlo()" id="btn_montecarlo">Ejecutar Simulación Montecarlo</button>
                 </div>
                 
                 <div>
                     <div class="result-box">
-                        <h3>Capital Final (Nominal)</h3>
-                        <div class="result-number" id="res_nominal_av">0 €</div>
+                        <h3>Capital Final en Euros de Hoy</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: -10px;">Ya descontando un 3% de inflación anual</p>
                         
-                        <div class="metrics-grid">
-                            <div class="metric-card">
-                                <div class="metric-title">Dinero de tu bolsillo</div>
-                                <div class="metric-value" id="res_aportado_av">0 €</div>
+                        <div class="metrics-grid" style="grid-template-columns: 1fr; gap: 0.5rem;">
+                            <div class="metric-card" style="border-color: var(--secondary);">
+                                <div class="metric-title" style="color: var(--secondary);">Escenario Medio (Probable)</div>
+                                <div class="metric-value" id="res_medio" style="font-size: 1.8rem;">0 €</div>
                             </div>
-                            <div class="metric-card">
-                                <div class="metric-title">Intereses (La Magia)</div>
-                                <div class="metric-value" id="res_intereses_av" style="color: var(--accent);">0 €</div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <div class="metric-card" style="flex: 1; background: #fef2f2; border-color: #fecaca;">
+                                    <div class="metric-title" style="color: #991b1b;">Peor Escenario (10%)</div>
+                                    <div class="metric-value" id="res_pesimista" style="color: #991b1b; font-size: 1.1rem;">0 €</div>
+                                </div>
+                                <div class="metric-card" style="flex: 1; background: #f0fdf4; border-color: #bbf7d0;">
+                                    <div class="metric-title" style="color: #166534;">Mejor Escenario (10%)</div>
+                                    <div class="metric-value" id="res_optimista" style="color: #166534; font-size: 1.1rem;">0 €</div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="info-bubble" style="margin-top: 1.5rem;">
-                            <strong>Ajuste por Inflación (3% anual):</strong><br>
-                            Ese capital final equivaldrá a un poder de compra de <span id="res_real_av" style="font-weight: bold; font-size: 1.2rem;">0 €</span> en dinero de hoy.
+                        <div class="info-bubble" style="margin-top: 1rem; padding: 0.8rem;">
+                            <strong>Dinero de tu bolsillo:</strong> <span id="res_aportado_av">0 €</span>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="chart-container">
-                <canvas id="crecimientoChart"></canvas>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="montecarloChart"></canvas>
             </div>
         </div>
 
@@ -317,7 +314,7 @@
             <p><strong>Nota crítica para el momento de la herencia:</strong></p>
             <p>Si el fondo se vende en vida, hay que pagar a Hacienda en el IRPF (entre un 19% y un 28%) sobre las ganancias.</p>
             <div class="info-bubble">
-                <strong>La estrategia legal:</strong> Si el titular fallece y no ha vendido, Hacienda aplica la "Plusvalía del muerto". Todos los beneficios acumulados durante décadas <strong>quedan exentos de IRPF</strong> (el contador se pone a cero). Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones (que entre padres e hijos tiene altas bonificaciones en muchas CC.AA. como Cataluña).
+                <strong>La estrategia legal:</strong> Si el titular fallece y no ha vendido, Hacienda aplica la "Plusvalía del muerto". Todos los beneficios acumulados durante décadas <strong>quedan exentos de IRPF</strong>. Quien hereda recibe el fondo valorado a precio del día del fallecimiento, tributando solo por el Impuesto de Sucesiones.
             </div>
         </div>
 
@@ -325,14 +322,14 @@
             <h2>4. Plan de Extracción Segura (Regla del 4%)</h2>
             <div class="grid-2">
                 <div>
-                    <p>El objetivo no es "gastar" el fondo, sino convertirlo en una máquina de rentas para las herederas. ¿Cuánto se puede sacar al año sin descapitalizar el fondo?</p>
+                    <p>¿Cuánto se puede sacar al año sin descapitalizar el fondo heredado?</p>
                     <p>Usaremos la <strong>Regla del 4% (Estudio Trinity)</strong>:</p>
                     <ul>
                         <li>Retirar como máximo el 4% del valor del fondo en el primer año.</li>
-                        <li><strong>Impacto Fiscal:</strong> Al sacar rentas, SÍ se pagan impuestos por las ganancias (19-28%). El cálculo ya te muestra lo que te llega limpio al bolsillo.</li>
+                        <li><strong>Impacto Fiscal:</strong> Al sacar rentas, SÍ se pagan impuestos por las ganancias generadas desde que se heredó. El cálculo ya descuenta un 19% de IRPF.</li>
                     </ul>
                     <div class="warning-bubble">
-                        <strong>Condición vital:</strong> Para que esta regla funcione, el dinero que no se saca <strong>debe seguir invertido en el fondo indexado global</strong>. Si lo pasas a la cuenta del banco, la inflación y los retiros lo agotarán rápido.
+                        <strong>Condición vital:</strong> El dinero que no se saca <strong>debe seguir invertido en el fondo indexado global</strong>.
                     </div>
                 </div>
                 
@@ -349,7 +346,7 @@
                             <div class="metric-value" id="res_renta_bruta">20.000 €</div>
                         </div>
                         <div class="metric-card" style="background: #f0fdf4; border-color: #bbf7d0;">
-                            <div class="metric-title">Renta Mensual NETA limpia</div>
+                            <div class="metric-title">Renta Mensual NETA</div>
                             <div class="metric-value" id="res_renta_neta_mes" style="font-size: 1.5rem; color: #166534;">1.350 €</div>
                             <div style="font-size: 0.75rem; color: #166534;">(Ya descontando ~19% IRPF)</div>
                         </div>
@@ -360,115 +357,133 @@
 
     </div>
 
-    <div class="footer">
-        <p>Herramienta diseñada para planificación a largo plazo familiar. Las rentabilidades pasadas no garantizan rentabilidades futuras. Documento de uso interno.</p>
-    </div>
-
     <script>
         let myChart = null;
 
         function formatMoney(amount) {
             return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
         }
-
-        function calcularSimulacionAvanzada() {
-            let pv = parseFloat(document.getElementById('capital_inicial').value) || 0;
-            let pmt1 = parseFloat(document.getElementById('aportacion_fase1').value) || 0;
-            let years1 = parseFloat(document.getElementById('anos_fase1').value) || 0;
-            let pmt2 = parseFloat(document.getElementById('aportacion_fase2').value) || 0;
-            let years2 = parseFloat(document.getElementById('anos_fase2').value) || 0;
-            
-            let r_annual = parseFloat(document.getElementById('rentabilidad').value);
-            let infl = 0.03; 
-            let r_m = r_annual / 12;
-            
-            let total_months = (years1 + years2) * 12;
-            let months1 = years1 * 12;
-            
-            let fv = pv;
-            let total_aportado = pv;
-            
-            let labels = [];
-            let data_aportado = [];
-            let data_intereses = [];
-            
-            labels.push('Año 0');
-            data_aportado.push(pv);
-            data_intereses.push(0);
-
-            for(let m = 1; m <= total_months; m++) {
-                let current_pmt = (m <= months1) ? pmt1 : pmt2;
-                
-                fv = fv * (1 + r_m) + current_pmt;
-                total_aportado += current_pmt;
-                
-                if (m % 12 === 0) {
-                    let year = m / 12;
-                    labels.push('Año ' + year);
-                    data_aportado.push(total_aportado);
-                    data_intereses.push(fv - total_aportado);
-                }
-            }
-
-            let total_years = years1 + years2;
-            let fv_real = fv / Math.pow((1 + infl), total_years);
-            let intereses = fv - total_aportado;
-
-            document.getElementById('res_nominal_av').innerText = formatMoney(fv);
-            document.getElementById('res_aportado_av').innerText = formatMoney(total_aportado);
-            document.getElementById('res_intereses_av').innerText = formatMoney(intereses);
-            document.getElementById('res_real_av').innerText = formatMoney(fv_real);
-            
-            actualizarGrafico(labels, data_aportado, data_intereses);
+        
+        // Generador de números aleatorios (Distribución Normal - Box-Muller)
+        function randomNormal(mean, stdDev) {
+            let u1 = Math.random();
+            let u2 = Math.random();
+            let randStdNormal = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            return mean + stdDev * randStdNormal;
         }
 
-        function actualizarGrafico(labels, aportado, intereses) {
-            const ctx = document.getElementById('crecimientoChart').getContext('2d');
+        function ejecutarMontecarlo() {
+            let btn = document.getElementById('btn_montecarlo');
+            btn.innerText = "Calculando 500 escenarios...";
+            btn.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                let pv = parseFloat(document.getElementById('capital_inicial').value) || 0;
+                let pmt1 = parseFloat(document.getElementById('aportacion_fase1').value) || 0;
+                let years1 = parseFloat(document.getElementById('anos_fase1').value) || 0;
+                let pmt2 = parseFloat(document.getElementById('aportacion_fase2').value) || 0;
+                let years2 = parseFloat(document.getElementById('anos_fase2').value) || 0;
+                
+                let total_years = years1 + years2;
+                
+                // Parametros MSCI World historicos
+                const mean_return = 0.085; // 8.5% nominal historico anual
+                const std_dev = 0.15;      // 15% volatilidad
+                const infl = 0.03;         // 3% inflacion constante
+                const NUM_SIMULATIONS = 500;
+                
+                let final_results = [];
+                let paths = []; 
+                
+                let total_aportado = pv + (pmt1 * years1 * 12) + (pmt2 * years2 * 12);
+
+                for (let sim = 0; sim < NUM_SIMULATIONS; sim++) {
+                    let current_value = pv;
+                    let path = [pv]; 
+                    
+                    for (let y = 1; y <= total_years; y++) {
+                        // Rentabilidad aleatoria este año
+                        let annual_return = randomNormal(mean_return, std_dev);
+                        let pmt_annual = (y <= years1) ? (pmt1 * 12) : (pmt2 * 12);
+                        
+                        current_value = current_value * (1 + annual_return) + pmt_annual;
+                        // Si por alguna catastrofe matematica baja de cero, se queda en 0
+                        if(current_value < 0) current_value = 0; 
+                        
+                        path.push(current_value);
+                    }
+                    
+                    let real_value = current_value / Math.pow((1 + infl), total_years);
+                    final_results.push(real_value);
+                    
+                    if (sim < 50) { // Solo dibujamos 50 lineas para no saturar el grafico
+                        paths.push(path);
+                    }
+                }
+                
+                final_results.sort((a, b) => a - b);
+                
+                let p10_index = Math.floor(NUM_SIMULATIONS * 0.10); // Peor escenario
+                let p50_index = Math.floor(NUM_SIMULATIONS * 0.50); // Medio
+                let p90_index = Math.floor(NUM_SIMULATIONS * 0.90); // Mejor
+                
+                let pesimista = final_results[p10_index];
+                let medio = final_results[p50_index];
+                let optimista = final_results[p90_index];
+                
+                document.getElementById('res_pesimista').innerText = formatMoney(pesimista);
+                document.getElementById('res_medio').innerText = formatMoney(medio);
+                document.getElementById('res_optimista').innerText = formatMoney(optimista);
+                document.getElementById('res_aportado_av').innerText = formatMoney(total_aportado);
+                
+                actualizarGraficoMontecarlo(total_years, paths);
+                
+                btn.innerText = "Ejecutar Simulación Montecarlo";
+                btn.style.opacity = "1";
+            }, 100);
+        }
+
+        function actualizarGraficoMontecarlo(total_years, paths) {
+            const ctx = document.getElementById('montecarloChart').getContext('2d');
             
             if (myChart) {
                 myChart.destroy();
             }
             
+            let labels = Array.from({length: total_years + 1}, (_, i) => 'Año ' + i);
+            let datasets = [];
+            
+            paths.forEach((path, index) => {
+                datasets.push({
+                    label: 'Simulacion ' + (index+1),
+                     path,
+                    borderColor: 'rgba(59, 130, 246, 0.15)', // Azul transparente
+                    borderWidth: 1.5,
+                    fill: false,
+                    pointRadius: 0,
+                    tension: 0.2
+                });
+            });
+            
             myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
+                type: 'line',
+                 {
                     labels: labels,
-                    datasets: [
-                        {
-                            label: 'Tu Dinero Aportado',
-                            data: aportado,
-                            backgroundColor: '#3b82f6',
-                            stack: 'Stack 0',
-                        },
-                        {
-                            label: 'Intereses Generados (La Magia)',
-                            data: intereses,
-                            backgroundColor: '#10b981',
-                            stack: 'Stack 0',
-                        }
-                    ]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) { label += ': '; }
-                                    if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(context.parsed.y);
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Muestra de 50 futuros financieros posibles según la volatilidad del mercado'
+                        },
+                        tooltip: { enabled: false }
                     },
                     scales: {
-                        x: { stacked: true },
                         y: { 
-                            stacked: true,
                             ticks: {
                                 callback: function(value) {
                                     return value / 1000 + 'k €'; 
@@ -493,7 +508,7 @@
         }
 
         window.onload = function() {
-            calcularSimulacionAvanzada();
+            ejecutarMontecarlo();
             calcularRentaAvanzada();
         };
     </script>
